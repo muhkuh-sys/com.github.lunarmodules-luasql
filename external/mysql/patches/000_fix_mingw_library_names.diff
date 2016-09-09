@@ -1,0 +1,11 @@
+--- mysql-5.7.15_org/libmysql/authentication_win/CMakeLists.txt	2016-08-25 13:52:06.000000000 +0200
++++ mysql-5.7.15/libmysql/authentication_win/CMakeLists.txt	2016-09-08 11:05:06.134958103 +0200
+@@ -26,7 +26,7 @@
+ SET(PLUGIN_SOURCES plugin_client.cc handshake_client.cc log_client.cc common.cc handshake.cc)
+ 
+ ADD_CONVENIENCE_LIBRARY(auth_win_client ${PLUGIN_SOURCES} ${HEADERS})
+-TARGET_LINK_LIBRARIES(auth_win_client Secur32)
++TARGET_LINK_LIBRARIES(auth_win_client secur32)
+ 
+ # In IDE, group headers in a separate folder.
+ 

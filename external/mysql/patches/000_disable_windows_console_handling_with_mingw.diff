@@ -1,0 +1,11 @@
+--- mysql-5.7.15_org/mysys/my_conio.c	2016-08-25 13:52:06.000000000 +0200
++++ mysql-5.7.15/mysys/my_conio.c	2016-09-08 13:36:55.427903107 +0200
+@@ -16,7 +16,7 @@
+ 
+ #include "mysys_priv.h"
+ 
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+ 
+ 
+ /* Windows console handling */

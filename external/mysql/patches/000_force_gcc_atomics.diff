@@ -1,0 +1,31 @@
+diff -uNr mysql-5.7.15/include/my_atomic.h mysql-5.7.15_patched/include/my_atomic.h
+--- mysql-5.7.15/include/my_atomic.h	2016-08-25 13:52:06.000000000 +0200
++++ mysql-5.7.15_patched/include/my_atomic.h	2016-09-07 22:16:12.000000000 +0200
+@@ -52,17 +52,17 @@
+   builtins if available. If neither Visual C++ or gcc we still choose
+   the Solaris implementation on Solaris (mainly for SunStudio compilers).
+ */
+-#if defined(_MSC_VER)
+-#  include "atomic/generic-msvc.h"
+-#elif defined(HAVE_SOLARIS_ATOMIC)
+-#  include "atomic/solaris.h"
+-#elif defined(HAVE_GCC_SYNC_BUILTINS)   /* Use old __sync by default */
+-#  include "atomic/gcc_sync.h"
+-#elif defined(HAVE_GCC_ATOMIC_BUILTINS) /* Use __atomic on e.g. powerpc */
++//#if defined(_MSC_VER)
++//#  include "atomic/generic-msvc.h"
++//#elif defined(HAVE_SOLARIS_ATOMIC)
++//#  include "atomic/solaris.h"
++//#elif defined(HAVE_GCC_SYNC_BUILTINS)   /* Use old __sync by default */
++//#  include "atomic/gcc_sync.h"
++//#elif defined(HAVE_GCC_ATOMIC_BUILTINS) /* Use __atomic on e.g. powerpc */
+ #  include "atomic/gcc_atomic.h"
+-#else
+-#  error Native atomics support not found!
+-#endif
++//#else
++//#  error Native atomics support not found!
++//#endif
+ 
+ /*
+   the macro below defines (as an expression) the code that

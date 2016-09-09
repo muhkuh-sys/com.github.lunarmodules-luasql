@@ -1,0 +1,13 @@
+diff -uNr mysql-5.7.15/libmysql/authentication_win/handshake.h mysql-5.7.15_patched/libmysql/authentication_win/handshake.h
+--- mysql-5.7.15/libmysql/authentication_win/handshake.h	2016-08-25 13:52:06.000000000 +0200
++++ mysql-5.7.15_patched/libmysql/authentication_win/handshake.h	2016-09-08 09:49:58.130566461 +0200
+@@ -100,7 +100,7 @@
+   Handshake(const char *ssp, side_t side);
+   virtual ~Handshake();
+ 
+-  int Handshake::packet_processing_loop();
++  int packet_processing_loop();
+ 
+   bool virtual is_complete() const
+   {
+
