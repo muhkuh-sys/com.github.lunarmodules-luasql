@@ -32,8 +32,12 @@ IF(${CMAKE_CROSSCOMPILING})
 	                    URL ${CMAKE_CURRENT_SOURCE_DIR}/mysql-boost-${VERSION_EXTERNAL}.tar.gz
 	                    URL_HASH SHA1=3113a720003b7519ddd040e82fb7c0b918cf759d
 	                    CMAKE_ARGS ${MYSQL_NATIVE_CMAKE_ARGS}
-	                    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/src/TARGET_mysql_native-build/extra/comp_err ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/tools/
+	                    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/tools && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/src/TARGET_mysql_native-build/extra/comp_err ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/tools/
 	)
+
+	SET(MYSQL_DEPENDS TARGET_mysql_native)
+ELSE(${CMAKE_CROSSCOMPILING})
+	SET(MYSQL_DEPENDS )
 ENDIF(${CMAKE_CROSSCOMPILING})
 
 
