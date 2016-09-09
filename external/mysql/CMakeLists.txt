@@ -14,9 +14,8 @@ SET(VERSION_EXTERNAL "5.7.15")
 #
 # Build a native version first if we are cross-compiling.
 #
-MESSAGE(STATUS "Cross compiling: ${CMAKE_CROSSCOMPILING}.")
 IF(${CMAKE_CROSSCOMPILING})
-	MESSAGE(STATUS "Building a native version of MySQL.")
+	MESSAGE(STATUS "Cross compiling -> building a native version of MySQL to get the tools.")
 
 	SET(MYSQL_NATIVE_CMAKE_ARGS "")
 	LIST(APPEND MYSQL_NATIVE_CMAKE_ARGS "-DWITH_BOOST=${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/src/TARGET_mysql_native/boost")
