@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT("org.muhkuh.lua-luasql")
 
+ENABLE_TESTING()
 
 #-----------------------------------------------------------------------------
 #
@@ -55,7 +56,7 @@ SET_TARGET_PROPERTIES(TARGET_luasql_mysql PROPERTIES PREFIX "" OUTPUT_NAME "mysq
 # Install the LUA modules.
 #
 INSTALL(TARGETS TARGET_luasql_mysql
-        LIBRARY DESTINATION modules)
+        LIBRARY DESTINATION ${INSTALL_DIR_LUA_MODULES}/luasql)
 
 
 #-----------------------------------------------------------------------------
@@ -65,5 +66,5 @@ INSTALL(TARGETS TARGET_luasql_mysql
 IF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows") AND (${CMAKE_COMPILER_IS_GNUCC}))
 	# Here are the MinGW specific tests.
 	ADD_TEST(NAME luasql_mysql_MinGW_DLL_dependencies
-	         COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_HOME_DIRECTORY}/cmake/tests/mingw_dll_dependencies.py -u lua5.1 $<TARGET_FILE:TARGET_luasql_mysql>)
+	         COMMAND "${PYTHON_EXECUTABLE}" ${TEST_SCRIPT_FOLDER}/mingw_dll_dependencies.py -u lua5.1 $<TARGET_FILE:TARGET_luasql_mysql>)
 ENDIF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows") AND (${CMAKE_COMPILER_IS_GNUCC}))
