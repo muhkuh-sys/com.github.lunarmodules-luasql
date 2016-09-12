@@ -38,7 +38,7 @@ INSTALL(FILES install.xml
 # Filter the pom.xml file.
 #
 SET(POM_ARTIFACT_ID  "luasql")
-SET(POM_GROUP_ID     "lua.muhkuh.org")
+SET(POM_GROUP_ID     "com.github.keplerproject.lua")
 SET(POM_VERSION      "${VERSION_FULL}")
 SET(POM_PACKAGING    "zip")
 CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/../pom.xml pom.xml)

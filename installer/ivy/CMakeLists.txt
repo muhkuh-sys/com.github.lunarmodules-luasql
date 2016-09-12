@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT("org.muhkuh.lua-luasql")
+PROJECT("com.github.keplerproject.lua-luasql")
 
 INCLUDE(ExternalProject)
 INCLUDE(../../cmake/version.cmake)

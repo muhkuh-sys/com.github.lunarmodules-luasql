@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-	<info organisation="org.muhkuh.lua"
+	<info organisation="com.github.keplerproject.lua"
 	      module="luasql"
 	      revision="${VERSION_FULL}"
 	      e:vcs-id="${PROJECT_VERSION_VCS}">
