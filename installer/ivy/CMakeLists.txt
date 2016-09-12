@@ -44,6 +44,8 @@ INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/TARGET_luasql-prefix/src/TARGET_luasql
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/TARGET_luasql-prefix/src/TARGET_luasql-build/ivy-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}.xml
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/TARGET_luasql-prefix/src/TARGET_luasql-build/pom.xml
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 # Create a copy of the artifacts without a version number in the filename.
 # This allows easy deploy to GitHub.
