@@ -2,6 +2,7 @@ import logging
 import os
 import os.path
 import patch
+import string
 
 
 def apply_diffs(strWorkingFolder, strPatchFolder, uiStrip):
@@ -41,6 +42,9 @@ def __copy_file(strSource, strDestination):
         if len(strData) < sizChunk:
             fEof = True
 
+    tFileSrc.close()
+    tFileDst.close()
+
 
 def copy_files(strWorkingFolder, strCopyFolder):
     for strDirname, astrDirnames, astrFilenames in os.walk(strCopyFolder):
@@ -65,6 +69,30 @@ def copy_files(strWorkingFolder, strCopyFolder):
             __copy_file(strSourceFile, strDestinationFile)
 
 
+def copy_list(strWorkingFolder, strCopyList):
+    # Open the copy list.
+    tFile = open(strCopyList, 'rt')
+    uiLineCnt = 0
+    # Read the file line by line.
+    for strLine in tFile:
+        # Count lines starting with 1.
+        uiLineCnt += 1
+        # Strip whitespace at the beginning and end of the file.
+        strLine = string.strip(strLine)
+        # Ignore empty lines or comments (starting with "#").
+        if len(strLine)!=0 and strLine[0]!='#':
+            # Split the line by commata. There should be 2 elements.
+            astrArgs = string.split(strLine, ',')
+            if len(astrArgs)!=2:
+                raise Exception('Invalid entry in copy list "%s" line %d. Expected one comma.' % (strCopyList, uiLineCnt))
+            # Strip whitespace from both arguments.
+            strSrc = string.strip(astrArgs[0])
+            strDst = string.strip(astrArgs[1])
+            print 'Copy file "%s" -> "%s".' % (strSrc, strDst)
+            __copy_file(strSrc, strDst)
+    tFile.close()
+
+
 def main():
     import argparse
 
@@ -86,6 +114,15 @@ def main():
         metavar='PATH'
     )
     tParser.add_argument(
+        '-s', '--strip',
+        dest='uiStrip',
+        required=False,
+        default=0,
+        metavar='N',
+        type=int,
+        help='strip N levels from the paths in all patch files'
+    )
+    tParser.add_argument(
         '-c', '--copy-folder',
         dest='strCopyFolder',
         required=False,
@@ -94,13 +131,12 @@ def main():
         metavar='PATH'
     )
     tParser.add_argument(
-        '-s', '--strip',
-        dest='uiStrip',
+        '-l', '--copy-list',
+        dest='strCopyList',
         required=False,
-        default=0,
-        metavar='N',
-        type=int,
-        help='strip N levels from the paths in all patch files'
+        default=None,
+        help='process FILE as a list of SOURCE,DESTINATION entries of files to copy',
+        metavar='PATH'
     )
     aOptions = tParser.parse_args()
 
@@ -150,11 +186,26 @@ def main():
             )
         if os.path.isdir(aOptions.strCopyFolder) != True:
             raise Exception(
-                'The patch folder "%s" is no folder.' %
+                'The copy folder "%s" is no folder.' %
                 aOptions.strCopyFolder
             )
 
         copy_files(aOptions.strWorkingFolder, aOptions.strCopyFolder)
+
+    # Is the copy list defined?
+    if aOptions.strCopyList is not None:
+        if os.path.exists(aOptions.strCopyList) != True:
+            raise Exception(
+                'The copy list "%s" does not exist or is not accessible.' %
+                aOptions.strCopyList
+            )
+        if os.path.isfile(aOptions.strCopyList) != True:
+            raise Exception(
+                'The copy list "%s" is no regular file.' %
+                aOptions.strCopyList
+            )
+
+        copy_list(aOptions.strWorkingFolder, aOptions.strCopyList)
 
 
 if __name__ == "__main__":
