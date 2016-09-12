@@ -49,7 +49,7 @@ ENDIF(${CMAKE_CROSSCOMPILING})
 # Build the project for the target architecture.
 #
 SET(MYSQL_CMAKE_ARGS "")
-LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_BOOST=${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/src/TARGET_mysql_native/boost")
+LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_BOOST=${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql/boost")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DDISABLE_SHARED=ON")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DWITHOUT_SERVER=ON")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_VALGRIND=OFF")
@@ -57,6 +57,7 @@ LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_MSCRT_DEBUG=OFF")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DENABLE_GCOV=OFF")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DENABLE_GPROF=OFF")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_CLIENT_PROTOCOL_TRACING=OFF")
+LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=install")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}")
@@ -65,6 +66,7 @@ IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER}")
 ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 IF(${CMAKE_CROSSCOMPILING})
+	# Use the "comp_err" tool from the native build.
 	LIST(APPEND MYSQL_CMAKE_ARGS "-DCOMP_ERR_PATH=${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/install/comp_err")
 ENDIF(${CMAKE_CROSSCOMPILING})
 
@@ -75,25 +77,18 @@ ExternalProject_Add(TARGET_mysql
                     URL_HASH SHA1=3113a720003b7519ddd040e82fb7c0b918cf759d
                     PATCH_COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_HOME_DIRECTORY}/cmake/tools/apply_patches.py --working-folder ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql --patch-folder ${CMAKE_CURRENT_SOURCE_DIR}/patches --strip 1
                     CMAKE_ARGS ${MYSQL_CMAKE_ARGS}
-                    INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install DESTDIR=${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}
+                    INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install
 )
 
 
 
 # 3) Provide all variables for the build.
-SET(LIBRARY ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/install/lib/libmysqlclient.a)
-
-#IF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"  AND  "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-#	SET(LDFLAGS "")
-#ENDIF("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU"  AND  "${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-
-SET(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/install/include)
+SET(LIBRARY ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql-build/install/lib/libmysqlclient.a)
+SET(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql-build/install/include)
 
 #----------------------------------------------------------------------------
 #
-# Store all information about the library in the cache.
+# Create an imported library target.
 #
 SET(LIBMYSQLCLIENT_LIBRARY              ${LIBRARY}              CACHE INTERNAL "The libmysqlclient library with the complete path.")
-#SET(LIBMYSQLCLIENT_LDFLAGS              ${LDFLAGS}              CACHE INTERNAL "All linker flags required to link the library. The list must be separated with whitespace.")
-#SET(LIBMYSQLCLIENT_DEFINES              ${DEFINES}              CACHE INTERNAL "All defines for the libusb library. This should be a list of entries starting with -D.")
 SET(LIBMYSQLCLIENT_INCLUDE_DIRECTORIES  ${INCLUDE_DIRECTORIES}  CACHE INTERNAL "The include folders for the library headers. The list must be separated with whitespace.")
