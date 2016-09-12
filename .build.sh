@@ -37,3 +37,16 @@ pushd build_windows64
 PATH=${PATH}:${PATH_MINGW32}:${PATH_MINGW64} cmake -DCMAKE_INSTALL_PREFIX="" -DCMAKE_C_FLAGS=-m64 -DCMAKE_CXX_FLAGS=-m64 -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_C_COMPILER=x86_64-w64-mingw32-gcc -DCMAKE_CXX_COMPILER=x86_64-w64-mingw32-g++ -DCMAKE_RC_COMPILER=x86_64-w64-mingw32-windres ..
 PATH=${PATH}:${PATH_MINGW32}:${PATH_MINGW64} make
 popd
+
+
+#-----------------------------------------------------------------------------
+#
+# Assemble the artifacts.
+#
+rm -rf build
+mkdir build
+pushd build
+cmake ../installer/ivy
+make
+make install
+popd
