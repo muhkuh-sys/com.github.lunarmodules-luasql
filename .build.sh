@@ -7,6 +7,16 @@ PATH_MINGW64=/usr/mingw-w64-x86_64/bin
 
 #-----------------------------------------------------------------------------
 #
+# Get the build requirements with ivy.
+#
+pushd ivy
+ant bootstrap
+ant
+popd
+
+
+#-----------------------------------------------------------------------------
+#
 # Build the windows32 version.
 #
 rm -rf build_windows32

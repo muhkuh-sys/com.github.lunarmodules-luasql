@@ -18,6 +18,12 @@ INCLUDE(cmake/muhkuh_installation_folders.cmake)
 # Python is used for some test scripts.
 FIND_PACKAGE(PythonInterp REQUIRED)
 
+# Include the location of the dependencies.
+INCLUDE(ivy/ant_paths.cmake OPTIONAL)
+
+# Select the LUA version.
+INCLUDE(cmake/muhkuh_lua.cmake)
+
 # TODO: Show a summary with FeatureSummary .
 
 
@@ -47,7 +53,7 @@ ENDIF(${CMAKE_BUILD_TOOL} MATCHES "(msdev|VCExpress|devenv)")
 
 ADD_SUBDIRECTORY(external)
 
-#ADD_SUBDIRECTORY(luasql)
+ADD_SUBDIRECTORY(luasql)
 
 
 #----------------------------------------------------------------------------
