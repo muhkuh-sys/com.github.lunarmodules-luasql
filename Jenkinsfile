@@ -20,7 +20,7 @@ docker.image('jenkins-ubuntu-1604').inside {
     sh './.build03_assemble_artifact.sh'
 
     stage 'Archive artifacts'
-    archive 'build/luasql-*.zip,build/luasql.zip,build/ivy-*.xml,build/ivy.xml'
+    archive 'build/luasql-*.zip,build/luasql.zip,build/ivy-*.xml,build/ivy.xml,build/pom.xml'
 
     stage 'Clean after build'
     sh 'rm -rf .[^.] .??* *'
