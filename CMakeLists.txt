@@ -27,6 +27,9 @@ INCLUDE(cmake/muhkuh_lua.cmake)
 # TODO: Show a summary with FeatureSummary .
 
 
+OPTION(OPTION_BUILD_MYSQL "Build the MySQL adapter." ON)
+OPTION(OPTION_BUILD_SQLITE3 "Build the SQLite3 adapter." ON)
+
 #----------------------------------------------------------------------------
 #
 # Set custom definitions for several compiler.
