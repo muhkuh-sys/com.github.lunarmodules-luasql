@@ -16,6 +16,9 @@ CONFIGURE_FILE(ivy.xml ivy-${VERSION_FULL}.xml)
 INSTALL(FILES ${MUHKUH_WIN32_INSTALL}/lua_plugins/luasql/mysql.dll
         DESTINATION windows_x86/lua_plugins/luasql
 )
+INSTALL(FILES ${MUHKUH_WIN32_INSTALL}/lua_plugins/luasql/sqlite3.dll
+        DESTINATION windows_x86/lua_plugins/luasql
+)
 
 
 #-----------------------------------------------------------------------------
@@ -23,6 +26,9 @@ INSTALL(FILES ${MUHKUH_WIN32_INSTALL}/lua_plugins/luasql/mysql.dll
 # Install the 64bit files.
 #
 INSTALL(FILES ${MUHKUH_WIN64_INSTALL}/lua_plugins/luasql/mysql.dll
+        DESTINATION windows_amd64/lua_plugins/luasql
+)
+INSTALL(FILES ${MUHKUH_WIN64_INSTALL}/lua_plugins/luasql/sqlite3.dll
         DESTINATION windows_amd64/lua_plugins/luasql
 )
 
