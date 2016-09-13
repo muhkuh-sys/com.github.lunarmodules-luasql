@@ -19,7 +19,7 @@ IF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows"))
 	GET_TARGET_PROPERTY(LUA_INCLUDE_DIR org.muhkuh.lua-lua51::TARGET_lualib INTERFACE_INCLUDE_DIRECTORIES)
 	SET(LUA_VERSION_STRING ${org.muhkuh.lua-lua51_VERSION})
 ELSE((${CMAKE_SYSTEM_NAME} STREQUAL "Windows"))
-	FIND_PACKAGE(Lua 5.3 REQUIRED)
+	FIND_PACKAGE(Lua 5.1 REQUIRED)
 
 #	# Try with LUA5.2 .
 #	# There is no support in CMake for LUA5.2 yet. Set everything by hand.
