@@ -32,14 +32,7 @@ ExternalProject_Add(TARGET_sqlite3
 )
 
 
-
-# 3) Provide all variables for the build.
-SET(LIBRARY ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-${VERSION_EXTERNAL}/src/TARGET_sqlite3-build/install/lib/libsqlite3.a)
-SET(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-${VERSION_EXTERNAL}/src/TARGET_sqlite3-build/install/include)
-
-#----------------------------------------------------------------------------
-#
-# Create an imported library target.
-#
-SET(LIBSQLITE3_LIBRARY              ${LIBRARY}              CACHE INTERNAL "The libsqlite3 library with the complete path.")
-SET(LIBSQLITE3_INCLUDE_DIRECTORIES  ${INCLUDE_DIRECTORIES}  CACHE INTERNAL "The include folders for the library headers. The list must be separated with whitespace.")
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-${VERSION_EXTERNAL}/src/TARGET_sqlite3-build/install/lib/libsqlite3.a
+        DESTINATION ${CMAKE_BINARY_DIR}/install/lib/)
+INSTALL(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-${VERSION_EXTERNAL}/src/TARGET_sqlite3-build/install/include
+        DESTINATION ${CMAKE_BINARY_DIR}/install)
