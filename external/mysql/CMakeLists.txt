@@ -4,6 +4,8 @@ PROJECT("mysql")
 
 INCLUDE(ExternalProject)
 
+# Python is used for the patch tool.
+FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
 SET(VERSION_EXTERNAL "5.7.15")
 
@@ -59,7 +61,11 @@ LIST(APPEND MYSQL_CMAKE_ARGS "-DENABLE_GPROF=OFF")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_CLIENT_PROTOCOL_TRACING=OFF")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=install")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}")
-LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
+# NOTE: Do not change the system name if this is a local build. Otherwise
+# CMake thinks it is cross compiling and will not run certain checks.
+IF(${CMAKE_CROSSCOMPILING})
+	LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
+ENDIF(${CMAKE_CROSSCOMPILING})
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}")
 LIST(APPEND MYSQL_CMAKE_ARGS "-DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}")
 IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
@@ -68,7 +74,15 @@ ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 IF(${CMAKE_CROSSCOMPILING})
 	# Use the "comp_err" tool from the native build.
 	LIST(APPEND MYSQL_CMAKE_ARGS "-DCOMP_ERR_PATH=${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/install/comp_err")
+ELSE(${CMAKE_CROSSCOMPILING})
+	# NOTE: Set the COMP_ERR_PATH option to the default value as it can not use it in the ADD_CUSTOM_COMMAND properly.
+	LIST(APPEND MYSQL_CMAKE_ARGS "-DCOMP_ERR_PATH=comp_err")
 ENDIF(${CMAKE_CROSSCOMPILING})
+
+# Unix platforms need PIC.
+IF(UNIX)
+	LIST(APPEND MYSQL_CMAKE_ARGS "-DWITH_PIC=ON")
+ENDIF(UNIX)
 
 ExternalProject_Add(TARGET_mysql
                     DEPENDS ${MYSQL_DEPENDS}
@@ -81,14 +95,8 @@ ExternalProject_Add(TARGET_mysql
 )
 
 
-
-# 3) Provide all variables for the build.
-SET(LIBRARY ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql-build/install/lib/libmysqlclient.a)
-SET(INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql-build/install/include)
-
-#----------------------------------------------------------------------------
-#
-# Create an imported library target.
-#
-SET(LIBMYSQLCLIENT_LIBRARY              ${LIBRARY}              CACHE INTERNAL "The libmysqlclient library with the complete path.")
-SET(LIBMYSQLCLIENT_INCLUDE_DIRECTORIES  ${INCLUDE_DIRECTORIES}  CACHE INTERNAL "The include folders for the library headers. The list must be separated with whitespace.")
+# Install all components to the common folder.
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql-build/install/lib/libmysqlclient.a
+        DESTINATION ${CMAKE_BINARY_DIR}/install/lib/)
+INSTALL(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql-build/install/include
+        DESTINATION ${CMAKE_BINARY_DIR}/install)
