@@ -13,10 +13,15 @@ PRJDIR=`pwd`
 mkdir -p ${PRJDIR}/build
 
 # Start the container and mount the project folder.
-lxc init mbs-ubuntu-1604-x64 ${CONTAINER} -c security.privileged=true
+lxc init mbs-ubuntu-1604-x64 ${CONTAINER}
 lxc config device add ${CONTAINER} projectDir disk source=${PRJDIR} path=/tmp/work
 lxc start ${CONTAINER}
 sleep 5
+
+# Prepare the build folder.
+lxc exec ${CONTAINER} -- bash -c 'rm -rf /tmp/build'
+lxc exec ${CONTAINER} -- bash -c 'mkdir /tmp/build'
+lxc exec ${CONTAINER} -- bash -c 'mount --bind /tmp/build /tmp/work/build'
 
 # Update the package list to prevent "not found" messages.
 lxc exec ${CONTAINER} -- bash -c 'apt-get update --assume-yes'
