@@ -134,7 +134,7 @@ pipeline {
         }
         stage('Save Artifacts') {
             steps {
-                archive 'build/com.github.keplerproject-lua*-luasql/targets/jonchki/**/*.xml,build/com.github.keplerproject-lua*-luasql/targets/jonchki/**/*.tar.xz,build/com.github.keplerproject-lua*-luasql/targets/jonchki/**/*.hash'
+                archive 'build/*.xml,build/*.tar.xz,build/*.hash,build/*.pom'
             }
         }
         stage('Clean after build') {
