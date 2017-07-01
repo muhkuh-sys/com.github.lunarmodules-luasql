@@ -72,6 +72,18 @@ TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_sqlite3
 TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
                       PRIVATE ${EXTERNAL_LIB_DIR}/libsqlite3.a)
 
+IF(UNIX)
+	# Link to libdl on linux systems.
+	TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
+	                      PRIVATE dl)
+
+	# Link to pthread.
+	SET(THREADS_PREFER_PTHREAD_FLAG ON)
+	FIND_PACKAGE(Threads REQUIRED)
+	TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
+	                      PRIVATE Threads::Threads)
+ENDIF(UNIX)
+
 # On MinGW link all compiler libraries static.
 IF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows") AND (${CMAKE_COMPILER_IS_GNUCC}))
 	SET_PROPERTY(TARGET TARGET_luasql_sqlite3 PROPERTY LINK_FLAGS "-static-libgcc -static-libstdc++")
