@@ -32,19 +32,19 @@ INCLUDE(CPack)
 # Install the 32bit files.
 #
 INSTALL(FILES ${INSTALL_WINDOWS_X86}/lua_plugins/luasql/mysql.dll ${INSTALL_WINDOWS_X86}/lua_plugins/luasql/sqlite3.dll
-        DESTINATION windows_x86/lua_plugins)
+        DESTINATION windows_x86/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1404_X86}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1404_X86}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1404_x86/lua_plugins)
+        DESTINATION ubuntu_1404_x86/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1604_X86}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1604_X86}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1604_x86/lua_plugins)
+        DESTINATION ubuntu_1604_x86/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1610_X86}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1610_X86}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1610_x86/lua_plugins)
+        DESTINATION ubuntu_1610_x86/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1704_X86}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1704_X86}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1704_x86/lua_plugins)
+        DESTINATION ubuntu_1704_x86/lua_plugins/luasql)
 
 
 #-----------------------------------------------------------------------------
@@ -52,19 +52,19 @@ INSTALL(FILES ${INSTALL_UBUNTU_1704_X86}/lua_plugins/luasql/mysql.so ${INSTALL_U
 # Install the 64bit files.
 #
 INSTALL(FILES ${INSTALL_WINDOWS_X86_64}/lua_plugins/luasql/mysql.dll ${INSTALL_WINDOWS_X86_64}/lua_plugins/luasql/sqlite3.dll
-        DESTINATION windows_x86_64/lua_plugins)
+        DESTINATION windows_x86_64/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1404_X86_64}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1404_X86_64}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1404_x86_64/lua_plugins)
+        DESTINATION ubuntu_1404_x86_64/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1604_X86_64}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1604_X86_64}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1604_x86_64/lua_plugins)
+        DESTINATION ubuntu_1604_x86_64/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1610_X86_64}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1610_X86_64}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1610_x86_64/lua_plugins)
+        DESTINATION ubuntu_1610_x86_64/lua_plugins/luasql)
 
 INSTALL(FILES ${INSTALL_UBUNTU_1704_X86_64}/lua_plugins/luasql/mysql.so ${INSTALL_UBUNTU_1704_X86_64}/lua_plugins/luasql/sqlite3.so
-        DESTINATION ubuntu_1704_x86_64/lua_plugins)
+        DESTINATION ubuntu_1704_x86_64/lua_plugins/luasql)
 
 
 #-----------------------------------------------------------------------------
