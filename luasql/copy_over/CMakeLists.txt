@@ -7,6 +7,12 @@ FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
 ENABLE_TESTING()
 
+IF(UNIX)
+	# Link to pthread.
+	SET(THREADS_PREFER_PTHREAD_FLAG ON)
+	FIND_PACKAGE(Threads REQUIRED)
+ENDIF(UNIX)
+
 #-----------------------------------------------------------------------------
 #
 # Build the LUA mysql module.
@@ -36,6 +42,12 @@ IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
 	                      PRIVATE ws2_32 secur32)
 ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+
+IF(UNIX)
+	# Link to pthread.
+	TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
+	                      PRIVATE Threads::Threads)
+ENDIF(UNIX)
 
 # On MinGW link all compiler libraries static.
 IF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows") AND (${CMAKE_COMPILER_IS_GNUCC}))
@@ -78,8 +90,6 @@ IF(UNIX)
 	                      PRIVATE dl)
 
 	# Link to pthread.
-	SET(THREADS_PREFER_PTHREAD_FLAG ON)
-	FIND_PACKAGE(Threads REQUIRED)
 	TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
 	                      PRIVATE Threads::Threads)
 ENDIF(UNIX)
