@@ -1,7 +1,6 @@
-diff -uNr mysql-5.7.15/CMakeLists.txt mysql-5.7.15_patched/CMakeLists.txt
---- mysql-5.7.15/CMakeLists.txt	2016-08-25 13:52:06.000000000 +0200
-+++ mysql-5.7.15_patched/CMakeLists.txt	2016-09-08 10:13:11.840222483 +0200
-@@ -585,8 +585,8 @@
+--- mysql-5.7.18/CMakeLists.txt
++++ mysql-5.7.18_patched/CMakeLists.txt
+@@ -590,8 +590,8 @@
  ADD_SUBDIRECTORY(mysys)
  ADD_SUBDIRECTORY(mysys_ssl)
  ADD_SUBDIRECTORY(libmysql)
@@ -12,7 +11,7 @@ diff -uNr mysql-5.7.15/CMakeLists.txt mysql-5.7.15_patched/CMakeLists.txt
  
  IF(WITH_UNIT_TESTS)
    # Visual Studio 11 needs this extra flag in order to compile gmock.
-@@ -608,9 +608,9 @@
+@@ -613,9 +613,9 @@
  ENDIF()
  
  ADD_SUBDIRECTORY(extra)
@@ -25,7 +24,7 @@ diff -uNr mysql-5.7.15/CMakeLists.txt mysql-5.7.15_patched/CMakeLists.txt
  
  IF(UNIX)
    ADD_SUBDIRECTORY(man)
-@@ -628,7 +628,7 @@
+@@ -633,7 +633,7 @@
  
  # scripts/mysql_config depends on client and server targets loaded above.
  # It is referenced by some of the directories below, so we insert it here.
@@ -34,7 +33,7 @@ diff -uNr mysql-5.7.15/CMakeLists.txt mysql-5.7.15_patched/CMakeLists.txt
  
  IF(NOT WITHOUT_SERVER)
    ADD_SUBDIRECTORY(mysql-test)
-@@ -679,8 +679,8 @@
+@@ -685,8 +685,8 @@
  ELSE()
    SET(CPACK_GENERATOR "TGZ")
  ENDIF() 
@@ -45,4 +44,3 @@ diff -uNr mysql-5.7.15/CMakeLists.txt mysql-5.7.15_patched/CMakeLists.txt
  
  IF(UNIX)
    INSTALL(FILES Docs/mysql.info DESTINATION ${INSTALL_INFODIR} OPTIONAL COMPONENT Info)
-

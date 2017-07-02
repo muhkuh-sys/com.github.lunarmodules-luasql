@@ -1,6 +1,6 @@
---- mysql-5.7.15_org/include/my_global.h	2016-08-25 13:52:06.000000000 +0200
-+++ mysql-5.7.15/include/my_global.h	2016-09-08 12:18:10.159932092 +0200
-@@ -348,7 +348,7 @@
+--- mysql-5.7.18_org/include/my_global.h
++++ mysql-5.7.18/include/my_global.h
+@@ -359,7 +359,7 @@
  
  /* Some defines of functions for portability */
  

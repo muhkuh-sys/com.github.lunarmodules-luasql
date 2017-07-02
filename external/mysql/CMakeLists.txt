@@ -7,7 +7,7 @@ INCLUDE(ExternalProject)
 # Python is used for the patch tool.
 FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
-SET(VERSION_EXTERNAL "5.7.15")
+SET(VERSION_EXTERNAL "5.7.18")
 
 #----------------------------------------------------------------------------
 #
@@ -34,7 +34,7 @@ IF(${CMAKE_CROSSCOMPILING})
 	ExternalProject_Add(TARGET_mysql_native
 	                    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}
 	                    URL ${CMAKE_CURRENT_SOURCE_DIR}/mysql-boost-${VERSION_EXTERNAL}.tar.gz
-	                    URL_HASH SHA1=3113a720003b7519ddd040e82fb7c0b918cf759d
+	                    URL_HASH SHA1=346e91db0160434488493966054eb25f712c89c8
 	                    CMAKE_ARGS ${MYSQL_NATIVE_CMAKE_ARGS}
 	                    INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/install && ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/src/TARGET_mysql_native-build/extra/comp_err ${CMAKE_CURRENT_BINARY_DIR}/mysql-native-${VERSION_EXTERNAL}/install/
 	)
@@ -88,7 +88,7 @@ ExternalProject_Add(TARGET_mysql
                     DEPENDS ${MYSQL_DEPENDS}
                     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}
                     URL ${CMAKE_CURRENT_SOURCE_DIR}/mysql-boost-${VERSION_EXTERNAL}.tar.gz
-                    URL_HASH SHA1=3113a720003b7519ddd040e82fb7c0b918cf759d
+                    URL_HASH SHA1=346e91db0160434488493966054eb25f712c89c8
                     PATCH_COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_HOME_DIRECTORY}/cmake/tools/apply_patches.py --working-folder ${CMAKE_CURRENT_BINARY_DIR}/mysql-${VERSION_EXTERNAL}/src/TARGET_mysql --patch-folder ${CMAKE_CURRENT_SOURCE_DIR}/patches --strip 1
                     CMAKE_ARGS ${MYSQL_CMAKE_ARGS}
                     INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install

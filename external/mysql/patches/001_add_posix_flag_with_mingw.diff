@@ -1,6 +1,6 @@
---- mysql-5.7.15_org/CMakeLists.txt	2016-08-25 13:52:06.000000000 +0200
-+++ mysql-5.7.15/CMakeLists.txt	2016-09-08 12:25:09.410925883 +0200
-@@ -147,6 +147,10 @@
+--- mysql-5.7.18_org/CMakeLists.txt
++++ mysql-5.7.18/CMakeLists.txt
+@@ -154,6 +154,10 @@
  SET(MYSQL_MACHINE_TYPE ${CMAKE_SYSTEM_PROCESSOR})
  
  

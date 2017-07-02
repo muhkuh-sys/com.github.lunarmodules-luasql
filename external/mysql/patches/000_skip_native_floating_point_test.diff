@@ -1,10 +1,9 @@
-diff -uNr mysql-5.7.15/cmake/build_configurations/compiler_options.cmake mysql-5.7.15_patched/cmake/build_configurations/compiler_options.cmake
---- mysql-5.7.15/cmake/build_configurations/compiler_options.cmake	2016-08-25 13:52:06.000000000 +0200
-+++ mysql-5.7.15_patched/cmake/build_configurations/compiler_options.cmake	2016-09-07 21:53:51.000000000 +0200
-@@ -15,7 +15,7 @@
- 
+--- mysql-5.7.18/cmake/build_configurations/compiler_options.cmake
++++ mysql-5.7.18_patched/cmake/build_configurations/compiler_options.cmake
+@@ -16,7 +16,7 @@
  INCLUDE(CheckCCompilerFlag)
  INCLUDE(CheckCXXCompilerFlag)
+ INCLUDE(cmake/compiler_bugs.cmake)
 -INCLUDE(cmake/floating_point.cmake)
 +#INCLUDE(cmake/floating_point.cmake)
  
