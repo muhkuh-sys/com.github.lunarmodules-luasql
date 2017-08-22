@@ -37,15 +37,6 @@ elseif strDistId=='ubuntu' then
       t:install('ubuntu_1604_x86_64/lua_plugins/luasql/mysql.so',    '${install_lua_cpath}/luasql/')
       t:install('ubuntu_1604_x86_64/lua_plugins/luasql/sqlite3.so',  '${install_lua_cpath}/luasql/')
     end
-
-  elseif strDistVersion=='16.10' then
-    if strCpuArch=='x86' then
-      t:install('ubuntu_1610_x86/lua_plugins/luasql/mysql.so',       '${install_lua_cpath}/luasql/')
-      t:install('ubuntu_1610_x86/lua_plugins/luasql/sqlite3.so',     '${install_lua_cpath}/luasql/')
-    elseif strCpuArch=='x86_64' then
-      t:install('ubuntu_1610_x86_64/lua_plugins/luasql/mysql.so',    '${install_lua_cpath}/luasql/')
-      t:install('ubuntu_1610_x86_64/lua_plugins/luasql/sqlite3.so',  '${install_lua_cpath}/luasql/')
-    end
   end
 end
 
