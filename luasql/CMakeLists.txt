@@ -5,7 +5,7 @@ PROJECT("luasql")
 INCLUDE(ExternalProject)
 
 
-SET(VERSION_EXTERNAL "2.3.2")
+SET(VERSION_EXTERNAL "2.3.5")
 SET(VERSION_PACKAGE  "1")
 SET(PROJECT_VERSION  "${VERSION_EXTERNAL}.${VERSION_PACKAGE}")
 
@@ -51,7 +51,7 @@ IF((${BUILDCFG_ONLY_JONCHKI_CFG} STREQUAL "OFF"))
 	ExternalProject_Add(TARGET_luasql
 	                    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/luasql-${VERSION_EXTERNAL}
 	                    URL ${CMAKE_CURRENT_SOURCE_DIR}/luasql-${VERSION_EXTERNAL}.tar.gz
-	                    URL_HASH SHA1=089b797d22589277b9b2f926f4da008fe7026ccb
+	                    URL_HASH SHA1=bb9ceb6c16d2c0a1411119d517a1058e3321994f
 	                    PATCH_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/copy_over ${CMAKE_CURRENT_BINARY_DIR}/luasql-${VERSION_EXTERNAL}/src/TARGET_luasql
 	                    CMAKE_ARGS ${SUB_CMAKE_ARGS}
 	                    TEST_BEFORE_INSTALL 1
