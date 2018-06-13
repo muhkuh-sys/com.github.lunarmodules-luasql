@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 PROJECT("luasql")
 
 INCLUDE(ExternalProject)
-
+FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
 SET(VERSION_EXTERNAL "2.3.5")
 SET(VERSION_PACKAGE  "3")
