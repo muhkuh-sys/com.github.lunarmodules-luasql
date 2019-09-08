@@ -16,7 +16,6 @@
 	<dependencies>
 		<build-dependency group="org.lua" module="lua" artifact="lua" version="5.4"/>
 		<build-dependency group="net.zlib" module="zlib" artifact="zlib" version="1.2"/>
-		<build-dependency group="se.haxx.curl" module="curl" artifact="curl" version="7.65.3.1"/>
 		<dependency group="org.lua" module="lua" artifact="lua"/>
 	</dependencies>
 </jonchki-artifact>
