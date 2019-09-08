@@ -7,6 +7,7 @@ import sys
 
 __astrStandardDlls = [
 	'advapi32',
+	'crypt32',
 	'kernel32',
 	'msvcrt',
 	'secur32',
