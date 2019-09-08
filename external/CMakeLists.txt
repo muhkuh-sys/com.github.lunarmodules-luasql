@@ -9,5 +9,6 @@ FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 #
 # Include the projects in the subdirectories.
 #
-ADD_SUBDIRECTORY(mysql)
+ADD_SUBDIRECTORY(openssl)
+ADD_SUBDIRECTORY(mariadb-connector-c)
 ADD_SUBDIRECTORY(sqlite3)

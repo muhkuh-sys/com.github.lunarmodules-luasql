@@ -7,11 +7,11 @@ FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
 ENABLE_TESTING()
 
-IF(UNIX)
+#IF(UNIX)
 	# Link to pthread.
 	SET(THREADS_PREFER_PTHREAD_FLAG ON)
 	FIND_PACKAGE(Threads REQUIRED)
-ENDIF(UNIX)
+#ENDIF(UNIX)
 
 #-----------------------------------------------------------------------------
 #
@@ -35,23 +35,23 @@ TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
 
 # Add the MySQL includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_mysql
-                           PRIVATE ${EXTERNAL_INCLUDE_DIR})
+                           PRIVATE ${MARIADB_INCLUDE_DIR})
 TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
-                      PRIVATE ${EXTERNAL_LIB_DIR}/libmysqlclient.a)
+                      PRIVATE ${MARIADB_LIB})
 IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 	TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
-	                      PRIVATE ws2_32 secur32)
+	                      PRIVATE ws2_32 secur32 shlwapi)
 ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
-IF(UNIX)
+#IF(UNIX)
 	# Link to pthread.
 	TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
 	                      PRIVATE Threads::Threads)
-ENDIF(UNIX)
+#ENDIF(UNIX)
 
 # On MinGW link all compiler libraries static.
 IF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows") AND (${CMAKE_COMPILER_IS_GNUCC}))
-	SET_PROPERTY(TARGET TARGET_luasql_mysql PROPERTY LINK_FLAGS "-static-libgcc -static-libstdc++")
+	SET_PROPERTY(TARGET TARGET_luasql_mysql PROPERTY LINK_FLAGS "-static-libgcc -static-libstdc++ -static")
 ENDIF((${CMAKE_SYSTEM_NAME} STREQUAL "Windows") AND (${CMAKE_COMPILER_IS_GNUCC}))
 
 # Set the name of the output file to "mysql" without any prefix like "lib".
@@ -80,9 +80,9 @@ TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
 
 # Add the SQLite3 includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_sqlite3
-                           PRIVATE ${EXTERNAL_INCLUDE_DIR})
+                           PRIVATE ${SQLITE_INCLUDE_DIR})
 TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
-                      PRIVATE ${EXTERNAL_LIB_DIR}/libsqlite3.a)
+                      PRIVATE ${SQLITE_LIB})
 
 IF(UNIX)
 	# Link to libdl on linux systems.

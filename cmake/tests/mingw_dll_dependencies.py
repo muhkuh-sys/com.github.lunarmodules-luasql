@@ -11,6 +11,7 @@ __astrStandardDlls = [
 	'msvcrt',
 	'secur32',
 	'setupapi',
+	'shlwapi',
 	'user32',
 	'ws2_32'
 ]

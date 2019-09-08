@@ -1,0 +1,229 @@
+diff -uNr mariadb-connector-c-3.1.3-src/CMakeLists.txt mariadb-connector-c-3.1.3-src_patched/CMakeLists.txt
+--- mariadb-connector-c-3.1.3-src/CMakeLists.txt	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/CMakeLists.txt	2019-08-26 21:45:01.305023948 +0200
+@@ -365,7 +365,7 @@
+ INCLUDE_DIRECTORIES(${CC_BINARY_DIR}/include)
+ 
+ IF(WIN32)
+-  SET(SYSTEM_LIBS ws2_32 advapi32 kernel32 shlwapi crypt32 ${LIBZ})
++  SET(SYSTEM_LIBS ws2_32 advapi32 kernel32 shlwapi crypt32 -lpthread ${LIBZ})
+ ELSE()
+   SET(SYSTEM_LIBS ${SYSTEM_LIBS} ${LIBPTHREAD} ${LIBDL} ${LIBM})
+   IF(ICONV_EXTERNAL)
+diff -uNr mariadb-connector-c-3.1.3-src/include/ma_context.h mariadb-connector-c-3.1.3-src_patched/include/ma_context.h
+--- mariadb-connector-c-3.1.3-src/include/ma_context.h	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/include/ma_context.h	2019-08-26 22:05:05.785598741 +0200
+@@ -25,7 +25,7 @@
+   (This particular implementation uses Posix ucontext swapcontext().)
+ */
+ 
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+ #define MY_CONTEXT_USE_WIN32_FIBERS 1
+ #elif defined(__GNUC__) && __GNUC__ >= 3 && defined(__x86_64__) && !defined(__ILP32__)
+ #define MY_CONTEXT_USE_X86_64_GCC_ASM
+diff -uNr mariadb-connector-c-3.1.3-src/include/ma_pthread.h mariadb-connector-c-3.1.3-src_patched/include/ma_pthread.h
+--- mariadb-connector-c-3.1.3-src/include/ma_pthread.h	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/include/ma_pthread.h	2019-08-26 21:07:31.991659199 +0200
+@@ -21,7 +21,10 @@
+ #ifndef _my_pthread_h
+ #define _my_pthread_h
+ 
+-#if defined(_WIN32)
++#if defined(__MINGW32__) || defined(__MINGW64__)
++#include <pthread.h>
++
++#elif defined(_WIN32)
+ #include <windows.h>
+ typedef CRITICAL_SECTION pthread_mutex_t;
+ #define pthread_mutex_init(A,B)  InitializeCriticalSection(A)
+diff -uNr mariadb-connector-c-3.1.3-src/libmariadb/CMakeLists.txt mariadb-connector-c-3.1.3-src_patched/libmariadb/CMakeLists.txt
+--- mariadb-connector-c-3.1.3-src/libmariadb/CMakeLists.txt	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/libmariadb/CMakeLists.txt	2019-08-25 21:30:17.324592018 +0200
+@@ -456,9 +456,9 @@
+         DESTINATION ${INSTALL_LIBDIR})
+ 
+ 
+-IF(WIN32)
+-   # On Windows, install PDB
+-   INSTALL(FILES $<TARGET_PDB_FILE:libmariadb> DESTINATION "${INSTALL_LIBDIR}"
+-           CONFIGURATIONS Debug RelWithDebInfo
+-           COMPONENT Development)
+-ENDIF()
++#IF(WIN32)
++#   # On Windows, install PDB
++#   INSTALL(FILES $<TARGET_PDB_FILE:libmariadb> DESTINATION "${INSTALL_LIBDIR}"
++#           CONFIGURATIONS Debug RelWithDebInfo
++#           COMPONENT Development)
++#ENDIF()
+diff -uNr mariadb-connector-c-3.1.3-src/libmariadb/ma_client_plugin.c.in mariadb-connector-c-3.1.3-src_patched/libmariadb/ma_client_plugin.c.in
+--- mariadb-connector-c-3.1.3-src/libmariadb/ma_client_plugin.c.in	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/libmariadb/ma_client_plugin.c.in	2019-08-26 21:36:38.550416468 +0200
+@@ -466,7 +466,7 @@
+ 
+ 
+ /* see <mysql/client_plugin.h> for a full description */
+-struct st_mysql_client_plugin * STDCALL
++struct st_mysql_client_plugin *
+ mysql_load_plugin(MYSQL *mysql, const char *name, int type, int argc, ...)
+ {
+   struct st_mysql_client_plugin *p;
+diff -uNr mariadb-connector-c-3.1.3-src/libmariadb/mariadb_lib.c mariadb-connector-c-3.1.3-src_patched/libmariadb/mariadb_lib.c
+--- mariadb-connector-c-3.1.3-src/libmariadb/mariadb_lib.c	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/libmariadb/mariadb_lib.c	2019-08-26 21:58:38.288225980 +0200
+@@ -33,6 +33,7 @@
+ #include "ma_server_error.h"
+ #include <mariadb/ma_io.h>
+ #include "errmsg.h"
++#include <pthread.h>
+ #include <sys/stat.h>
+ #include <signal.h>
+ #include <time.h>
+@@ -69,7 +70,7 @@
+ #endif
+ #include <mysql/client_plugin.h>
+ #ifdef _WIN32
+-#include "Shlwapi.h"
++#include "shlwapi.h"
+ #define strncasecmp _strnicmp
+ #endif
+ 
+@@ -3509,7 +3510,7 @@
+   return mysql->net.sqlstate;
+ }
+ 
+-#ifndef _WIN32
++#if !defined(_WIN32)
+ #include <signal.h>
+ static void ignore_sigpipe()
+ {
+@@ -3519,7 +3520,7 @@
+ #define ignore_sigpipe()
+ #endif
+ 
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+ static int mysql_once_init()
+ #else
+ static void mysql_once_init()
+@@ -3531,7 +3532,7 @@
+   set_default_charset_by_name(MARIADB_DEFAULT_CHARSET, 0);
+   if (mysql_client_plugin_init())
+   {
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+     return 1;
+ #else
+     return;
+@@ -3567,12 +3568,12 @@
+ #endif
+   ignore_sigpipe();
+   mysql_client_init = 1;
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   return 0;
+ #endif
+ }
+ 
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+ static INIT_ONCE init_once= INIT_ONCE_STATIC_INIT;
+ BOOL CALLBACK win_init_once(
+   PINIT_ONCE InitOnce,
+@@ -3590,7 +3591,7 @@
+   char **argv __attribute__((unused)),
+   char **groups __attribute__((unused)))
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   BOOL ret = InitOnceExecuteOnce(&init_once, win_init_once, NULL, NULL);
+   return ret? 0: 1;
+ #else
+@@ -3614,7 +3615,7 @@
+ #endif
+   mysql_client_init= 0;
+   ma_init_done= 0;
+-#ifdef WIN32
++#if defined(WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   init_once = (INIT_ONCE)INIT_ONCE_STATIC_INIT;
+ #else
+   init_once = (pthread_once_t)PTHREAD_ONCE_INIT;
+diff -uNr mariadb-connector-c-3.1.3-src/plugins/pvio/pvio_npipe.c mariadb-connector-c-3.1.3-src_patched/plugins/pvio/pvio_npipe.c
+--- mariadb-connector-c-3.1.3-src/plugins/pvio/pvio_npipe.c	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/plugins/pvio/pvio_npipe.c	2019-08-26 21:00:27.322368540 +0200
+@@ -30,6 +30,12 @@
+ #include <string.h>
+ #include <ma_string.h>
+ 
++//#if _WIN32_WINNT >= 0x0600
++
++
++
++
++
+ /* Function prototypes */
+ my_bool pvio_npipe_set_timeout(MARIADB_PVIO *pvio, enum enum_pvio_timeout type, int timeout);
+ int pvio_npipe_get_timeout(MARIADB_PVIO *pvio, enum enum_pvio_timeout type);
+@@ -137,7 +143,11 @@
+       case WAIT_OBJECT_0:
+         break;
+       case WAIT_TIMEOUT:
++#if _WIN32_WINNT >= 0x0600
+         CancelIoEx(file, ov);
++#else
++        CancelIo(file);
++#endif
+         SetLastError(ERROR_TIMEOUT);
+         return FALSE;
+       default:
+@@ -237,7 +247,11 @@
+     szPipeName[MAX_PATH - 1]= 0;
+     snprintf(szPipeName, MAX_PATH - 1, "\\\\%s\\pipe\\%s", cinfo->host, cinfo->unix_socket);
+ 
++#if _WIN32_WINNT >= 0x0600
+     deadline = GetTickCount64() + pvio->timeout[PVIO_CONNECT_TIMEOUT];
++#else
++    deadline = GetTickCount() + pvio->timeout[PVIO_CONNECT_TIMEOUT];
++#endif
+     while (1)
+     {
+       if ((cpipe->pipe = CreateFile(szPipeName,
+@@ -261,7 +275,11 @@
+       if (!backoff)
+         backoff = 1;
+ 
++#if _WIN32_WINNT >= 0x0600
+       wait_ms = deadline - GetTickCount64();
++#else
++      wait_ms = deadline - GetTickCount();
++#endif
+       if (wait_ms > INFINITE)
+         wait_ms = INFINITE;
+ 
+@@ -336,7 +354,11 @@
+   HANDLE h;
+   if (pvio_npipe_get_handle(pvio, &h) == 0)
+   {
++#if _WIN32_WINNT >= 0x0600
+     return(CancelIoEx(h, NULL) ? 0 : 1);
++#else
++    return(CancelIo(h));
++#endif
+   }
+   return 1;
+ }
+diff -uNr mariadb-connector-c-3.1.3-src/plugins/pvio/pvio_socket.c mariadb-connector-c-3.1.3-src_patched/plugins/pvio/pvio_socket.c
+--- mariadb-connector-c-3.1.3-src/plugins/pvio/pvio_socket.c	2019-07-25 16:03:48.000000000 +0200
++++ mariadb-connector-c-3.1.3-src_patched/plugins/pvio/pvio_socket.c	2019-08-26 21:02:56.378862549 +0200
+@@ -1107,7 +1107,11 @@
+     my_socket s = ((struct st_pvio_socket *)pvio->data)->socket;
+ #ifdef _WIN32
+     shutdown(s, SD_BOTH);
++#       if _WIN32_WINNT >= 0x0600
+     CancelIoEx((HANDLE)s, NULL);
++#       else
++    CancelIo((HANDLE)s);
++#       endif
+ #else
+     shutdown(s, SHUT_RDWR);
+ #endif

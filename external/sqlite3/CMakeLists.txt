@@ -5,7 +5,7 @@ PROJECT("sqlite3")
 INCLUDE(ExternalProject)
 
 
-SET(VERSION_EXTERNAL "3240000")
+SET(VERSION_EXTERNAL "3290000")
 
 
 #----------------------------------------------------------------------------
@@ -25,7 +25,7 @@ ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 ExternalProject_Add(TARGET_sqlite3
                     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-${VERSION_EXTERNAL}
                     URL ${CMAKE_CURRENT_SOURCE_DIR}/sqlite-amalgamation-${VERSION_EXTERNAL}.zip
-                    URL_HASH SHA1=fed8b1c04c63ce200773586422c9976b54f408cc
+                    URL_HASH SHA1=a0eba79e5d1627946aead47e100a8a6f9f6fafff
                     PATCH_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/copy_over ${CMAKE_CURRENT_BINARY_DIR}/sqlite3-${VERSION_EXTERNAL}/src/TARGET_sqlite3
                     CMAKE_ARGS ${SQLITE3_CMAKE_ARGS}
                     INSTALL_COMMAND ${CMAKE_MAKE_PROGRAM} install
