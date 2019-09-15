@@ -37,23 +37,24 @@ IF(${CMAKE_CROSSCOMPILING})
 	ENDIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "i686")
 
 ELSE(${CMAKE_CROSSCOMPILING})
-	IF(CMAKE_SYSTEM_PROCESSOR MATCHES "^i[3456]86$")
-		SET(CONFIGURE_TARGET "linux-x86")
-	ELSEIF(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
-		SET(CONFIGURE_TARGET "linux-x86_64")
-	ELSE(CMAKE_SYSTEM_PROCESSOR MATCHES "^i[3456]86$")
+	# We are not cross compiling.
+	# There might be no toolchain file with the desired processor architecture.
+	# This introduces strange situations like an X86_64 processor running a
+	# 32bit system. While this sounds like something dumb to do on a real
+	# machine, it is a good choice for virtual build machines using docker.
+	# The consequence is not to use "CMAKE_SYSTEM_PROCESSOR" as this is always
+	# reports "x86_64" on a standard docker machine.
+	IF((CMAKE_SYSTEM_PROCESSOR MATCHES "^i[3456]86$") OR (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64"))
+		IF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+			SET(CONFIGURE_TARGET "linux-x86")
+		ELSEIF(CMAKE_SIZEOF_VOID_P EQUAL 8)
+			SET(CONFIGURE_TARGET "linux-x86_64")
+		ELSE(CMAKE_SIZEOF_VOID_P EQUAL 4)
+			MESSAGE(FATAL_ERROR "Unsupported size of void.")
+		ENDIF(CMAKE_SIZEOF_VOID_P EQUAL 4)
+	ELSE((CMAKE_SYSTEM_PROCESSOR MATCHES "^i[3456]86$") OR (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64"))
 		MESSAGE(FATAL_ERROR "Unsupported system processor.")
-	ENDIF(CMAKE_SYSTEM_PROCESSOR MATCHES "^i[3456]86$")
-
-
-#ExternalProject_Add(TARGET_openssl
-#                    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/openssl
-#                    URL ${CMAKE_CURRENT_SOURCE_DIR}/openssl-1.1.1c.tar.gz
-#                    URL_HASH SHA1=71b830a077276cbeccc994369538617a21bee808
-#                    CONFIGURE_COMMAND cd ../TARGET_openssl && ${CONFIGURE_CMD} ${CONFIGURE_ARGS}
-#                    BUILD_COMMAND make -C ../TARGET_openssl
-#                    INSTALL_COMMAND make -C ../TARGET_openssl install DESTDIR=${CMAKE_CURRENT_BINARY_DIR}/install
-#)
+	ENDIF((CMAKE_SYSTEM_PROCESSOR MATCHES "^i[3456]86$") OR (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64"))
 ENDIF(${CMAKE_CROSSCOMPILING})
 
 SET(ZLIB_INCLUDE "${CMAKE_BINARY_DIR}/../lua5.1/build_requirements/jonchki/install/dev/include")
