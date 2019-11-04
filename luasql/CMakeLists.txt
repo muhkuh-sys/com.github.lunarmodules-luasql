@@ -5,8 +5,8 @@ PROJECT("luasql")
 INCLUDE(ExternalProject)
 FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 
-SET(VERSION_EXTERNAL "2.3.5")
-SET(VERSION_PACKAGE  "3")
+SET(VERSION_EXTERNAL "2.5.0")
+SET(VERSION_PACKAGE  "1")
 SET(PROJECT_VERSION  "${VERSION_EXTERNAL}.${VERSION_PACKAGE}")
 
 # Get the VCS version for the jonchki configuration.
@@ -51,7 +51,7 @@ IF((${BUILDCFG_ONLY_JONCHKI_CFG} STREQUAL "OFF"))
 	ExternalProject_Add(TARGET_luasql
 	                    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/luasql-${VERSION_EXTERNAL}
 	                    URL ${CMAKE_CURRENT_SOURCE_DIR}/luasql-${VERSION_EXTERNAL}.tar.gz
-	                    URL_HASH SHA1=bb9ceb6c16d2c0a1411119d517a1058e3321994f
+	                    URL_HASH SHA1=3efad0647d2b3e25f2e47c1b356a49522e1cdfee
 	                    PATCH_COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/copy_over ${CMAKE_CURRENT_BINARY_DIR}/luasql-${VERSION_EXTERNAL}/src/TARGET_luasql
 	                    CMAKE_ARGS ${SUB_CMAKE_ARGS}
 	                    TEST_BEFORE_INSTALL 1
