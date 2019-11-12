@@ -14,7 +14,7 @@ INCLUDE(${CMAKE_HOME_DIRECTORY}/cmake/version.cmake)
 
 # Filter the jonchki configuration.
 CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/luasql.xml
-               ${CMAKE_CURRENT_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}.xml
+               ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}.xml
                @ONLY)
 
 #----------------------------------------------------------------------------
