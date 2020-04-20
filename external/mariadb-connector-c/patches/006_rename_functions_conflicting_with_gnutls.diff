@@ -1,0 +1,100 @@
+diff -uNr mariadb-connector-c-3.1.7-src/include/ma_hash.h mariadb-connector-c-3.1.7-src-patched/include/ma_hash.h
+--- mariadb-connector-c-3.1.7-src/include/ma_hash.h	2020-01-22 11:08:18.000000000 +0100
++++ mariadb-connector-c-3.1.7-src-patched/include/ma_hash.h	2020-04-20 15:09:58.348482947 +0200
+@@ -52,12 +52,12 @@
+ my_bool _hash_init(HASH *hash,uint default_array_elements, uint key_offset,
+ 		  uint key_length, hash_get_key get_key,
+ 		  void (*free_element)(void*), uint flags CALLER_INFO_PROTO);
+-void hash_free(HASH *tree);
++void mariadb_hash_free(HASH *tree);
+ uchar *hash_element(HASH *hash,uint idx);
+ void * hash_search(HASH *info,const uchar *key,uint length);
+ void * hash_next(HASH *info,const uchar *key,uint length);
+-my_bool hash_insert(HASH *info,const uchar *data);
+-my_bool hash_delete(HASH *hash,uchar *record);
++my_bool mariadb_hash_insert(HASH *info,const uchar *data);
++my_bool mariadb_hash_delete(HASH *hash,uchar *record);
+ my_bool hash_update(HASH *hash,uchar *record,uchar *old_key,uint old_key_length);
+ my_bool hash_check(HASH *hash);			/* Only in debug library */
+ 
+diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/ma_hash.c mariadb-connector-c-3.1.7-src-patched/libmariadb/ma_hash.c
+--- mariadb-connector-c-3.1.7-src/libmariadb/ma_hash.c	2020-01-22 11:08:18.000000000 +0100
++++ mariadb-connector-c-3.1.7-src-patched/libmariadb/ma_hash.c	2020-04-20 15:10:47.296808064 +0200
+@@ -69,7 +69,7 @@
+ }
+ 
+ 
+-void hash_free(HASH *hash)
++void mariadb_hash_free(HASH *hash)
+ {
+   if (hash->free)
+   {
+@@ -287,7 +287,7 @@
+ 
+ 	/* Write a hash-key to the hash-index */
+ 
+-my_bool hash_insert(HASH *info,const uchar *record)
++my_bool mariadb_hash_insert(HASH *info,const uchar *record)
+ {
+   int flag;
+   uint halfbuff,hash_nr,first_index,idx;
+@@ -421,7 +421,7 @@
+ ** if there is a free-function it's called for record if found
+ ******************************************************************************/
+ 
+-my_bool hash_delete(HASH *hash,uchar *record)
++my_bool mariadb_hash_delete(HASH *hash,uchar *record)
+ {
+   uint blength,pos2,pos_hashnr,lastpos_hashnr,idx,empty_index;
+   HASH_LINK *data,*lastpos,*gpos,*pos,*pos3,*empty;
+diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connector-c-3.1.7-src-patched/libmariadb/mariadb_lib.c
+--- mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c	2020-04-16 09:08:09.509862672 +0200
++++ mariadb-connector-c-3.1.7-src-patched/libmariadb/mariadb_lib.c	2020-04-20 15:15:58.966736172 +0200
+@@ -1895,9 +1895,9 @@
+     free(mysql->options.extension->url);
+     free(mysql->options.extension->connection_handler);
+     if(hash_inited(&mysql->options.extension->connect_attrs))
+-      hash_free(&mysql->options.extension->connect_attrs);
++      mariadb_hash_free(&mysql->options.extension->connect_attrs);
+     if (hash_inited(&mysql->options.extension->userdata))
+-      hash_free(&mysql->options.extension->userdata);
++      mariadb_hash_free(&mysql->options.extension->userdata);
+ 
+   }
+   free(mysql->options.extension);
+@@ -2877,7 +2877,7 @@
+         p+= key_len + 1;
+         key_len= strlen((char *)p);
+         mysql->options.extension->connect_attrs_len-= key_len + get_store_length(key_len);
+-        hash_delete(&mysql->options.extension->connect_attrs, h);
++        mariadb_hash_delete(&mysql->options.extension->connect_attrs, h);
+       }
+ 
+     }
+@@ -2886,7 +2886,7 @@
+     CHECK_OPT_EXTENSION_SET(&mysql->options);
+     if (hash_inited(&mysql->options.extension->connect_attrs))
+     {
+-      hash_free(&mysql->options.extension->connect_attrs);
++      mariadb_hash_free(&mysql->options.extension->connect_attrs);
+       mysql->options.extension->connect_attrs_len= 0;
+     }
+     break;
+@@ -2969,7 +2969,7 @@
+       p+= strlen(key) + 1;
+       memcpy(p, &data, sizeof(void *));
+ 
+-      if (hash_insert(&mysql->options.extension->userdata, buffer))
++      if (mariadb_hash_insert(&mysql->options.extension->userdata, buffer))
+       {
+         free(buffer);
+         SET_CLIENT_ERROR(mysql, CR_INVALID_PARAMETER_NO, SQLSTATE_UNKNOWN, 0);
+@@ -3022,7 +3022,7 @@
+         if (arg2)
+           strcpy((char *)p, arg2);
+ 
+-        if (hash_insert(&mysql->options.extension->connect_attrs, buffer))
++        if (mariadb_hash_insert(&mysql->options.extension->connect_attrs, buffer))
+         {
+           free(buffer);
+           SET_CLIENT_ERROR(mysql, CR_INVALID_PARAMETER_NO, SQLSTATE_UNKNOWN, 0);
