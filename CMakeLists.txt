@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 
 PROJECT("com.github.keplerproject-luasql")
 
@@ -17,6 +17,7 @@ INCLUDE(cmake/muhkuh_installation_folders.cmake)
 OPTION(BUILDCFG_ONLY_JONCHKI_CFG "Build only the jonchki configuration. This is used for the resolve phase. The default is OFF."
        "OFF")
 
+OPTION(BUILDCFG_DRIVER "Select the driver to build.")
 
 #----------------------------------------------------------------------------
 #

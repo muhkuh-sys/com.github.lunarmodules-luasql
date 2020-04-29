@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 
 PROJECT("luasql")
 
@@ -13,8 +13,11 @@ SET(PROJECT_VERSION  "${VERSION_EXTERNAL}.${VERSION_PACKAGE}")
 INCLUDE(${CMAKE_HOME_DIRECTORY}/cmake/version.cmake)
 
 # Filter the jonchki configuration.
-CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/luasql.xml
-               ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}.xml
+CONFIGURE_FILE(mysql/installer/lua${BUILDCFG_LUA_VERSION}/luasql-mysql.xml
+               ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-mysql-${PROJECT_VERSION}.xml
+               @ONLY)
+CONFIGURE_FILE(sqlite3/installer/lua${BUILDCFG_LUA_VERSION}/luasql-sqlite3.xml
+               ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-sqlite3-${PROJECT_VERSION}.xml
                @ONLY)
 
 #----------------------------------------------------------------------------
@@ -39,10 +42,10 @@ IF((${BUILDCFG_ONLY_JONCHKI_CFG} STREQUAL "OFF"))
 	LIST(APPEND SUB_CMAKE_ARGS "-DMARIADB_LIB=${EXTERNAL_LIB_DIR}/mariadb/libmariadbclient.a")
 	LIST(APPEND SUB_CMAKE_ARGS "-DMARIADB_INCLUDE_DIR=${EXTERNAL_INCLUDE_DIR}/mariadb")
 
-	LIST(APPEND SUB_CMAKE_ARGS "-DGNUTLS_LIBRARY=${CMAKE_BINARY_DIR}/../external/gnutls/install/lib/libgnutls.a")
-	LIST(APPEND SUB_CMAKE_ARGS "-DHOGWEED_LIBRARY=${CMAKE_BINARY_DIR}/../external/libnettle/install/lib/libhogweed.a")
-	LIST(APPEND SUB_CMAKE_ARGS "-DNETTLE_LIBRARY=${CMAKE_BINARY_DIR}/../external/libnettle/install/lib/libnettle.a")
-	LIST(APPEND SUB_CMAKE_ARGS "-DGMP_LIBRARY=${CMAKE_BINARY_DIR}/../external/gmp/install/lib/libgmp.a")
+	LIST(APPEND SUB_CMAKE_ARGS "-DGNUTLS_LIBRARY=${CMAKE_BINARY_DIR}/../../external/gnutls/install/lib/libgnutls.a")
+	LIST(APPEND SUB_CMAKE_ARGS "-DHOGWEED_LIBRARY=${CMAKE_BINARY_DIR}/../../external/libnettle/install/lib/libhogweed.a")
+	LIST(APPEND SUB_CMAKE_ARGS "-DNETTLE_LIBRARY=${CMAKE_BINARY_DIR}/../../external/libnettle/install/lib/libnettle.a")
+	LIST(APPEND SUB_CMAKE_ARGS "-DGMP_LIBRARY=${CMAKE_BINARY_DIR}/../../external/gmp/install/lib/libgmp.a")
 
 	LIST(APPEND SUB_CMAKE_ARGS "-DTEST_SCRIPT_FOLDER=${CMAKE_HOME_DIRECTORY}/cmake/tests")
 	LIST(APPEND SUB_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/install")
@@ -61,72 +64,12 @@ IF((${BUILDCFG_ONLY_JONCHKI_CFG} STREQUAL "OFF"))
 
 	#----------------------------------------------------------------------------
 	#
-	# Build a package for the selected platform.
+	# Build the selected driver package.
 	#
 
-	SET(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_BINARY_DIR}/../../repository/com/github/keplerproject/luasql/${PROJECT_VERSION})
-	SET(CPACK_INCLUDE_TOPLEVEL_DIRECTORY FALSE)
-	SET(CPACK_PACKAGE_FILE_NAME "lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}-${JONCHKI_PLATFORM}")
-
-	SET(CPACK_GENERATOR "TXZ")
-	INCLUDE(CPack)
-
-	# This is the folder where the external project TARGET_luasql installed the files.
-	SET(SUB_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/install/lua_plugins")
-
-	IF(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
-		# Package a windows build.
-
-		INSTALL(DIRECTORY ${SUB_INSTALL_DIR}/luasql
-		        DESTINATION lua_plugins)
-
-		CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/install_windows.lua
-		               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
-		               @ONLY)
-
-		INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
-		        DESTINATION .)
-	ELSE(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
-		# Package a linux build.
-
-		INSTALL(DIRECTORY ${SUB_INSTALL_DIR}/luasql
-		        DESTINATION lua_plugins)
-
-		CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/install_linux.lua
-		               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
-		               @ONLY)
-
-		INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
-		        DESTINATION .)
-	ENDIF(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
-
-	CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/luasql.xml
-	               ${CPACK_OUTPUT_FILE_PREFIX}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}-${JONCHKI_PLATFORM}.xml
-	               @ONLY)
-
-
-	#-----------------------------------------------------------------------------
-	#
-	# Create a custom target named "pack".
-	# It builds the package and creates the hashes.
-	#
-	ADD_CUSTOM_TARGET(pack
-	                  COMMAND ${CMAKE_MAKE_PROGRAM}
-	                  COMMAND ${CMAKE_MAKE_PROGRAM} package
-	                  COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_HOME_DIRECTORY}/cmake/tools/generate_hash.py ${CPACK_OUTPUT_FILE_PREFIX}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}-${JONCHKI_PLATFORM}.xml
-	                  COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_HOME_DIRECTORY}/cmake/tools/generate_hash.py ${CPACK_OUTPUT_FILE_PREFIX}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}-${JONCHKI_PLATFORM}.tar.xz
-	                  COMMENT "Pack the artifact and generate the hashes...")
-
-
-	#-----------------------------------------------------------------------------
-	#
-	# Filter the pom.xml file.
-	#
-	SET(POM_ARTIFACT_ID  "luasql")
-	SET(POM_GROUP_ID     "com.github.keplerproject")
-	SET(POM_VERSION      "${PROJECT_VERSION}")
-	SET(POM_PACKAGING    "tar.xz")
-	CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/pom.xml
-	               ${CPACK_OUTPUT_FILE_PREFIX}/lua${BUILDCFG_LUA_VERSION}-luasql-${PROJECT_VERSION}.pom
-	               @ONLY)
+	IF((${BUILDCFG_DRIVER} STREQUAL "mysql"))
+		ADD_SUBDIRECTORY(mysql)
+	ELSEIF((${BUILDCFG_DRIVER} STREQUAL "sqlite3"))
+		ADD_SUBDIRECTORY(sqlite3)
+	ENDIF((${BUILDCFG_DRIVER} STREQUAL "mysql"))
 ENDIF((${BUILDCFG_ONLY_JONCHKI_CFG} STREQUAL "OFF"))

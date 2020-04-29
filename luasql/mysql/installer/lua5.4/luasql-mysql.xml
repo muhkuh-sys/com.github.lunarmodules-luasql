@@ -2,7 +2,7 @@
 <jonchki-artifact version="1.0">
 	<info group="com.github.keplerproject"
 	      module="luasql"
-	      artifact="lua5.4-luasql"
+	      artifact="lua5.4-luasql-mysql"
 	      version="@PROJECT_VERSION@"
 	      vcs-id="@PROJECT_VERSION_VCS@"
 	      extension="tar.xz"
@@ -11,6 +11,7 @@
 		<author name="Kepler Project" url="https://github.com/keplerproject/luasql" />
 		<description>
 			LuaSQL is a simple interface from Lua to a DBMS.
+			This is the mysql driver.
 		</description>
 	</info>
 	<dependencies>
