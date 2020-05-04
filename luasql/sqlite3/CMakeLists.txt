@@ -22,7 +22,7 @@ IF(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
 	# Package a windows build.
 
 	INSTALL(FILES ${SUB_INSTALL_DIR}/luasql/sqlite3.dll
-	        DESTINATION lua_plugins)
+	        DESTINATION lua_plugins/luasql)
 
 	CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/install_windows.lua
 	               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
@@ -34,7 +34,7 @@ ELSE(${JONCHKI_PLATFORM_DIST_ID} STREQUAL "windows")
 	# Package a linux build.
 
 	INSTALL(FILES ${SUB_INSTALL_DIR}/luasql/sqlite3.so
-	        DESTINATION lua_plugins)
+	        DESTINATION lua_plugins/luasql)
 
 	CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/install_linux.lua
 	               ${CMAKE_CURRENT_BINARY_DIR}/package/install.lua
