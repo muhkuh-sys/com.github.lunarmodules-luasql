@@ -1,6 +1,6 @@
-diff -uNr mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/plugins/auth/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt	2020-04-16 08:47:51.287741105 +0200
-+++ mariadb-connector-c-3.1.7-src-patched/plugins/auth/CMakeLists.txt	2020-04-16 08:51:31.127652836 +0200
+diff -uNr mariadb-connector-c-3.1.13-src/plugins/auth/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/plugins/auth/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/plugins/auth/CMakeLists.txt	2022-04-20 12:07:12.986897518 +0200
++++ mariadb-connector-c-3.1.13-src_patched/plugins/auth/CMakeLists.txt	2022-04-20 12:07:46.342909038 +0200
 @@ -30,7 +30,7 @@
  REGISTER_PLUGIN(TARGET dialog
                  TYPE MARIADB_CLIENT_PLUGIN_AUTH
@@ -19,7 +19,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt mariadb-conn
                  SOURCES ${CC_SOURCE_DIR}/plugins/auth/ed25519.c 
                          ${REF10_SOURCES}
                          ${CRYPT_SOURCE}
-@@ -70,7 +70,7 @@
+@@ -76,7 +76,7 @@
    REGISTER_PLUGIN(TARGET caching_sha2_password
                  TYPE MARIADB_CLIENT_PLUGIN_AUTH
                  CONFIGURATIONS DYNAMIC STATIC OFF
@@ -28,7 +28,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt mariadb-conn
                  SOURCES ${CC_SOURCE_DIR}/plugins/auth/caching_sha2_pw.c 
                          ${CRYPT_SOURCE}
                  LIBRARIES ${CRYPT_LIBS})
-@@ -81,7 +81,7 @@
+@@ -87,7 +87,7 @@
      REGISTER_PLUGIN(TARGET sha256_password
                      TYPE MARIADB_CLIENT_PLUGIN_AUTH
                      CONFIGURATIONS DYNAMIC STATIC OFF
@@ -37,7 +37,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt mariadb-conn
                      SOURCES ${AUTH_DIR}/sha256_pw.c
                      LIBRARIES ${CRYPT_LIBS})
    ENDIF()
-@@ -106,7 +106,7 @@
+@@ -107,7 +107,7 @@
    REGISTER_PLUGIN(TARGET auth_gssapi_client
                    TYPE MARIADB_CLIENT_PLUGIN_AUTH
                    CONFIGURATIONS DYNAMIC STATIC OFF
@@ -46,7 +46,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt mariadb-conn
                    SOURCES ${GSSAPI_SOURCES}
                    INCLUDES ${CC_SOURCE_DIR}/plugins/auth ${GSSAPI_INCS}
                    LIBRARIES ${GSSAPI_LIBS})
-@@ -123,6 +123,6 @@
+@@ -127,6 +127,6 @@
  REGISTER_PLUGIN(TARGET mysql_clear_password
                  TYPE MARIADB_CLIENT_PLUGIN_AUTH
                  CONFIGURATIONS DYNAMIC STATIC OFF
@@ -54,9 +54,9 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/auth/CMakeLists.txt mariadb-conn
 +                DEFAULT STATIC
                  SOURCES ${AUTH_DIR}/mariadb_cleartext.c)
  
-diff -uNr mariadb-connector-c-3.1.7-src/plugins/io/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/plugins/io/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/plugins/io/CMakeLists.txt	2020-04-16 08:47:51.291741102 +0200
-+++ mariadb-connector-c-3.1.7-src-patched/plugins/io/CMakeLists.txt	2020-04-16 08:52:07.307639273 +0200
+diff -uNr mariadb-connector-c-3.1.13-src/plugins/io/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/plugins/io/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/plugins/io/CMakeLists.txt	2022-04-20 12:07:12.990897519 +0200
++++ mariadb-connector-c-3.1.13-src_patched/plugins/io/CMakeLists.txt	2022-04-20 12:07:46.346909040 +0200
 @@ -7,7 +7,7 @@
      REGISTER_PLUGIN(TARGET remote_io
                    TYPE MARIADB_CLIENT_PLUGIN_IO
@@ -66,9 +66,9 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/io/CMakeLists.txt mariadb-connec
                    SOURCES ${CC_SOURCE_DIR}/plugins/io/remote_io.c
                    INCLUDES ${CURL_INCLUDE_DIR}
                    LIBRARIES ${CURL_LIBRARIES})
-diff -uNr mariadb-connector-c-3.1.7-src/plugins/pvio/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/plugins/pvio/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/plugins/pvio/CMakeLists.txt	2020-04-16 08:47:51.291741102 +0200
-+++ mariadb-connector-c-3.1.7-src-patched/plugins/pvio/CMakeLists.txt	2020-04-16 08:52:25.799632426 +0200
+diff -uNr mariadb-connector-c-3.1.13-src/plugins/pvio/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/plugins/pvio/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/plugins/pvio/CMakeLists.txt	2022-04-20 12:07:12.990897519 +0200
++++ mariadb-connector-c-3.1.13-src_patched/plugins/pvio/CMakeLists.txt	2022-04-20 12:07:46.346909040 +0200
 @@ -15,13 +15,13 @@
    REGISTER_PLUGIN(TARGET pvio_npipe
                  TYPE MARIADB_CLIENT_PLUGIN_PVIO

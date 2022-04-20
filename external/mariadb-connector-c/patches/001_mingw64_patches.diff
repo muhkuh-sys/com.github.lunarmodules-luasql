@@ -1,18 +1,18 @@
-diff -uNr mariadb-connector-c-3.1.7-src/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/CMakeLists.txt	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt	2020-04-16 08:43:13.871872992 +0200
-@@ -367,7 +367,7 @@
+diff -uNr mariadb-connector-c-3.1.13-src/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/CMakeLists.txt	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt	2022-04-20 11:47:58.353923735 +0200
+@@ -356,7 +356,7 @@
  INCLUDE_DIRECTORIES(${CC_BINARY_DIR}/include)
  
  IF(WIN32)
 -  SET(SYSTEM_LIBS ws2_32 advapi32 kernel32 shlwapi crypt32 ${LIBZ})
 +  SET(SYSTEM_LIBS ws2_32 advapi32 kernel32 shlwapi crypt32 -lpthread ${LIBZ})
  ELSE()
-   SET(SYSTEM_LIBS ${SYSTEM_LIBS} ${LIBPTHREAD} ${LIBDL} ${LIBM})
+   SET(SYSTEM_LIBS ${SYSTEM_LIBS} ${LIBPTHREAD} ${CMAKE_DL_LIBS} ${LIBM})
    IF(ICONV_EXTERNAL)
-diff -uNr mariadb-connector-c-3.1.7-src/include/ma_context.h mariadb-connector-c-3.1.7-src-patched/include/ma_context.h
---- mariadb-connector-c-3.1.7-src/include/ma_context.h	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/include/ma_context.h	2020-04-16 08:43:13.871872992 +0200
+diff -uNr mariadb-connector-c-3.1.13-src/include/ma_context.h mariadb-connector-c-3.1.13-src_patched/include/ma_context.h
+--- mariadb-connector-c-3.1.13-src/include/ma_context.h	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/include/ma_context.h	2022-04-20 11:48:40.501999295 +0200
 @@ -25,7 +25,7 @@
    (This particular implementation uses Posix ucontext swapcontext().)
  */
@@ -22,9 +22,9 @@ diff -uNr mariadb-connector-c-3.1.7-src/include/ma_context.h mariadb-connector-c
  #define MY_CONTEXT_USE_WIN32_FIBERS 1
  #elif defined(__GNUC__) && __GNUC__ >= 3 && defined(__x86_64__) && !defined(__ILP32__)
  #define MY_CONTEXT_USE_X86_64_GCC_ASM
-diff -uNr mariadb-connector-c-3.1.7-src/include/ma_pthread.h mariadb-connector-c-3.1.7-src-patched/include/ma_pthread.h
---- mariadb-connector-c-3.1.7-src/include/ma_pthread.h	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/include/ma_pthread.h	2020-04-16 08:43:13.887872984 +0200
+diff -uNr mariadb-connector-c-3.1.13-src/include/ma_pthread.h mariadb-connector-c-3.1.13-src_patched/include/ma_pthread.h
+--- mariadb-connector-c-3.1.13-src/include/ma_pthread.h	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/include/ma_pthread.h	2022-04-20 11:49:40.102097068 +0200
 @@ -21,7 +21,10 @@
  #ifndef _my_pthread_h
  #define _my_pthread_h
@@ -37,29 +37,29 @@ diff -uNr mariadb-connector-c-3.1.7-src/include/ma_pthread.h mariadb-connector-c
  #include <windows.h>
  typedef CRITICAL_SECTION pthread_mutex_t;
  #define pthread_mutex_init(A,B)  InitializeCriticalSection(A)
-diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/libmariadb/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/libmariadb/CMakeLists.txt	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/libmariadb/CMakeLists.txt	2020-04-16 08:43:13.891872981 +0200
-@@ -455,9 +455,9 @@
+diff -uNr mariadb-connector-c-3.1.13-src/libmariadb/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/libmariadb/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/libmariadb/CMakeLists.txt	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/libmariadb/CMakeLists.txt	2022-04-20 11:50:31.114173059 +0200
+@@ -463,9 +463,9 @@
          DESTINATION ${INSTALL_LIBDIR})
  
  
--IF(WIN32)
+-IF(MSVC)
 -   # On Windows, install PDB
 -   INSTALL(FILES $<TARGET_PDB_FILE:libmariadb> DESTINATION "${INSTALL_LIBDIR}"
 -           CONFIGURATIONS Debug RelWithDebInfo
 -           COMPONENT Development)
 -ENDIF()
-+#IF(WIN32)
++#IF(MSVC)
 +#   # On Windows, install PDB
 +#   INSTALL(FILES $<TARGET_PDB_FILE:libmariadb> DESTINATION "${INSTALL_LIBDIR}"
 +#           CONFIGURATIONS Debug RelWithDebInfo
 +#           COMPONENT Development)
 +#ENDIF()
-diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/ma_client_plugin.c.in mariadb-connector-c-3.1.7-src-patched/libmariadb/ma_client_plugin.c.in
---- mariadb-connector-c-3.1.7-src/libmariadb/ma_client_plugin.c.in	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/libmariadb/ma_client_plugin.c.in	2020-04-16 08:43:13.891872981 +0200
-@@ -464,7 +464,7 @@
+diff -uNr mariadb-connector-c-3.1.13-src/libmariadb/ma_client_plugin.c.in mariadb-connector-c-3.1.13-src_patched/libmariadb/ma_client_plugin.c.in
+--- mariadb-connector-c-3.1.13-src/libmariadb/ma_client_plugin.c.in	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/libmariadb/ma_client_plugin.c.in	2022-04-20 12:02:50.386791101 +0200
+@@ -472,7 +472,7 @@
  
  
  /* see <mysql/client_plugin.h> for a full description */
@@ -68,9 +68,9 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/ma_client_plugin.c.in mariadb
  mysql_load_plugin(MYSQL *mysql, const char *name, int type, int argc, ...)
  {
    struct st_mysql_client_plugin *p;
-diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connector-c-3.1.7-src-patched/libmariadb/mariadb_lib.c
---- mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/libmariadb/mariadb_lib.c	2020-04-16 08:43:13.891872981 +0200
+diff -uNr mariadb-connector-c-3.1.13-src/libmariadb/mariadb_lib.c mariadb-connector-c-3.1.13-src_patched/libmariadb/mariadb_lib.c
+--- mariadb-connector-c-3.1.13-src/libmariadb/mariadb_lib.c	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/libmariadb/mariadb_lib.c	2022-04-20 11:55:00.250481786 +0200
 @@ -34,6 +34,7 @@
  #include "ma_server_error.h"
  #include <mariadb/ma_io.h>
@@ -79,25 +79,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connect
  #include <sys/stat.h>
  #include <signal.h>
  #include <time.h>
-@@ -70,7 +71,7 @@
- #endif
- #include <mysql/client_plugin.h>
- #ifdef _WIN32
--#include "Shlwapi.h"
-+#include "shlwapi.h"
- #define strncasecmp _strnicmp
- #endif
- 
-@@ -3541,7 +3542,7 @@
-   return mysql->net.sqlstate;
- }
- 
--#ifndef _WIN32
-+#if !defined(_WIN32)
- #include <signal.h>
- static void ignore_sigpipe()
- {
-@@ -3551,7 +3552,7 @@
+@@ -3730,7 +3731,7 @@
  #define ignore_sigpipe()
  #endif
  
@@ -106,7 +88,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connect
  static int mysql_once_init()
  #else
  static void mysql_once_init()
-@@ -3563,7 +3564,7 @@
+@@ -3742,7 +3743,7 @@
    set_default_charset_by_name(MARIADB_DEFAULT_CHARSET, 0);
    if (mysql_client_plugin_init())
    {
@@ -115,7 +97,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connect
      return 1;
  #else
      return;
-@@ -3599,12 +3600,12 @@
+@@ -3782,12 +3783,12 @@
  #endif
    ignore_sigpipe();
    mysql_client_init = 1;
@@ -130,7 +112,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connect
  static INIT_ONCE init_once= INIT_ONCE_STATIC_INIT;
  BOOL CALLBACK win_init_once(
    PINIT_ONCE InitOnce,
-@@ -3622,7 +3623,7 @@
+@@ -3805,7 +3806,7 @@
    char **argv __attribute__((unused)),
    char **groups __attribute__((unused)))
  {
@@ -139,7 +121,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connect
    BOOL ret = InitOnceExecuteOnce(&init_once, win_init_once, NULL, NULL);
    return ret? 0: 1;
  #else
-@@ -3646,7 +3647,7 @@
+@@ -3829,7 +3830,7 @@
  #endif
    mysql_client_init= 0;
    ma_init_done= 0;
@@ -148,23 +130,10 @@ diff -uNr mariadb-connector-c-3.1.7-src/libmariadb/mariadb_lib.c mariadb-connect
    init_once = (INIT_ONCE)INIT_ONCE_STATIC_INIT;
  #else
    init_once = (pthread_once_t)PTHREAD_ONCE_INIT;
-diff -uNr mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_npipe.c mariadb-connector-c-3.1.7-src-patched/plugins/pvio/pvio_npipe.c
---- mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_npipe.c	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/plugins/pvio/pvio_npipe.c	2020-04-16 08:43:13.891872981 +0200
-@@ -30,6 +30,12 @@
- #include <string.h>
- #include <ma_string.h>
- 
-+//#if _WIN32_WINNT >= 0x0600
-+
-+
-+
-+
-+
- /* Function prototypes */
- my_bool pvio_npipe_set_timeout(MARIADB_PVIO *pvio, enum enum_pvio_timeout type, int timeout);
- int pvio_npipe_get_timeout(MARIADB_PVIO *pvio, enum enum_pvio_timeout type);
-@@ -137,7 +143,11 @@
+diff -uNr mariadb-connector-c-3.1.13-src/plugins/pvio/pvio_npipe.c mariadb-connector-c-3.1.13-src_patched/plugins/pvio/pvio_npipe.c
+--- mariadb-connector-c-3.1.13-src/plugins/pvio/pvio_npipe.c	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/plugins/pvio/pvio_npipe.c	2022-04-20 11:58:03.646627691 +0200
+@@ -137,7 +137,11 @@
        case WAIT_OBJECT_0:
          break;
        case WAIT_TIMEOUT:
@@ -176,19 +145,19 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_npipe.c mariadb-connec
          SetLastError(ERROR_TIMEOUT);
          return FALSE;
        default:
-@@ -237,7 +247,11 @@
-     szPipeName[MAX_PATH - 1]= 0;
+@@ -237,7 +241,11 @@
      snprintf(szPipeName, MAX_PATH - 1, "\\\\%s\\pipe\\%s", cinfo->host, cinfo->unix_socket);
  
+     if (pvio->timeout[PVIO_CONNECT_TIMEOUT] > 0)
 +#if _WIN32_WINNT >= 0x0600
-     deadline = GetTickCount64() + pvio->timeout[PVIO_CONNECT_TIMEOUT];
+       deadline = GetTickCount64() + pvio->timeout[PVIO_CONNECT_TIMEOUT];
 +#else
-+    deadline = GetTickCount() + pvio->timeout[PVIO_CONNECT_TIMEOUT];
++      deadline = GetTickCount() + pvio->timeout[PVIO_CONNECT_TIMEOUT];
 +#endif
-     while (1)
-     {
-       if ((cpipe->pipe = CreateFile(szPipeName,
-@@ -261,7 +275,11 @@
+     else
+       deadline = INFINITE;
+ 
+@@ -264,7 +272,11 @@
        if (!backoff)
          backoff = 1;
  
@@ -200,7 +169,7 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_npipe.c mariadb-connec
        if (wait_ms > INFINITE)
          wait_ms = INFINITE;
  
-@@ -336,7 +354,11 @@
+@@ -339,7 +351,11 @@
    HANDLE h;
    if (pvio_npipe_get_handle(pvio, &h) == 0)
    {
@@ -212,10 +181,10 @@ diff -uNr mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_npipe.c mariadb-connec
    }
    return 1;
  }
-diff -uNr mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_socket.c mariadb-connector-c-3.1.7-src-patched/plugins/pvio/pvio_socket.c
---- mariadb-connector-c-3.1.7-src/plugins/pvio/pvio_socket.c	2020-01-22 11:08:18.000000000 +0100
-+++ mariadb-connector-c-3.1.7-src-patched/plugins/pvio/pvio_socket.c	2020-04-16 08:43:13.891872981 +0200
-@@ -1107,7 +1107,11 @@
+diff -uNr mariadb-connector-c-3.1.13-src/plugins/pvio/pvio_socket.c mariadb-connector-c-3.1.13-src_patched/plugins/pvio/pvio_socket.c
+--- mariadb-connector-c-3.1.13-src/plugins/pvio/pvio_socket.c	2021-05-03 13:58:17.000000000 +0200
++++ mariadb-connector-c-3.1.13-src_patched/plugins/pvio/pvio_socket.c	2022-04-20 11:58:47.142656834 +0200
+@@ -1119,7 +1119,11 @@
      my_socket s = ((struct st_pvio_socket *)pvio->data)->socket;
  #ifdef _WIN32
      shutdown(s, SD_BOTH);

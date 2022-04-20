@@ -1,7 +1,7 @@
-diff -uNr mariadb-connector-c-3.1.7-src/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/CMakeLists.txt	2020-04-16 08:53:28.979609430 +0200
-+++ mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt	2020-04-16 08:53:47.023602977 +0200
-@@ -376,7 +376,7 @@
+diff -uNr mariadb-connector-c-3.1.13-src/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/CMakeLists.txt	2022-04-20 12:08:37.270925957 +0200
++++ mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt	2022-04-20 12:08:53.590931212 +0200
+@@ -365,7 +365,7 @@
    ENDIF()
  ENDIF()
  IF(WITH_SSL)

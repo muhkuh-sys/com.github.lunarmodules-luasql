@@ -1,7 +1,7 @@
-diff -uNr mariadb-connector-c-3.1.7-src/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/CMakeLists.txt	2020-04-16 08:54:37.671519639 +0200
-+++ mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt	2020-04-16 08:54:47.815486432 +0200
-@@ -321,7 +321,10 @@
+diff -uNr mariadb-connector-c-3.1.13-src/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/CMakeLists.txt	2022-04-20 12:09:26.998941732 +0200
++++ mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt	2022-04-20 12:09:42.018946360 +0200
+@@ -308,7 +308,10 @@
      IF(GNUTLS_FOUND)
        ADD_DEFINITIONS(-DHAVE_GNUTLS -DHAVE_TLS)
        SET(SSL_SOURCES "${CC_SOURCE_DIR}/libmariadb/secure/gnutls.c")

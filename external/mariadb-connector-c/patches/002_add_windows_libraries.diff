@@ -1,7 +1,7 @@
-diff -uNr mariadb-connector-c-3.1.7-src/CMakeLists.txt mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt
---- mariadb-connector-c-3.1.7-src/CMakeLists.txt	2020-04-16 08:46:58.303764217 +0200
-+++ mariadb-connector-c-3.1.7-src-patched/CMakeLists.txt	2020-04-16 08:47:10.887758653 +0200
-@@ -296,6 +296,7 @@
+diff -uNr mariadb-connector-c-3.1.13-src/CMakeLists.txt mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt
+--- mariadb-connector-c-3.1.13-src/CMakeLists.txt	2022-04-20 12:05:11.074851933 +0200
++++ mariadb-connector-c-3.1.13-src_patched/CMakeLists.txt	2022-04-20 12:06:20.266878517 +0200
+@@ -283,6 +283,7 @@
        SET(SSL_LIBRARIES ${OPENSSL_SSL_LIBRARY} ${OPENSSL_CRYPTO_LIBRARY})
        IF(WIN32)
          CHECK_INCLUDE_FILES (${OPENSSL_INCLUDE_DIR}/openssl/applink.c HAVE_OPENSSL_APPLINK_C)
