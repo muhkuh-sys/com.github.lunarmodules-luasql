@@ -196,9 +196,11 @@ astrFolders = [
     strCfg_workingFolder,
     os.path.join(strCfg_workingFolder, 'external'),
     os.path.join(strCfg_workingFolder, 'lua5.1', 'mysql'),
+    os.path.join(strCfg_workingFolder, 'lua5.1', 'postgres'),
     os.path.join(strCfg_workingFolder, 'lua5.1', 'sqlite3'),
     os.path.join(strCfg_workingFolder, 'lua5.1', 'build_requirements'),
     os.path.join(strCfg_workingFolder, 'lua5.4', 'mysql'),
+    os.path.join(strCfg_workingFolder, 'lua5.4', 'postgres'),
     os.path.join(strCfg_workingFolder, 'lua5.4', 'sqlite3'),
     os.path.join(strCfg_workingFolder, 'lua5.4', 'build_requirements'),
 ]
@@ -302,6 +304,21 @@ astrCmd = [
     '-DPRJ_DIR=%s' % strCfg_projectFolder,
     '-DBUILDCFG_LUA_USE_SYSTEM="OFF"',
     '-DBUILDCFG_LUA_VERSION="5.1"',
+    '-DBUILDCFG_DRIVER="postgres"'
+]
+astrCmd.extend(astrCMAKE_COMPILER)
+astrCmd.extend(astrCMAKE_PLATFORM)
+astrCmd.append(strCfg_projectFolder)
+strCwd = os.path.join(strCfg_workingFolder, 'lua5.1', 'postgres')
+subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
+subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
+
+astrCmd = [
+    'cmake',
+    '-DCMAKE_INSTALL_PREFIX=""',
+    '-DPRJ_DIR=%s' % strCfg_projectFolder,
+    '-DBUILDCFG_LUA_USE_SYSTEM="OFF"',
+    '-DBUILDCFG_LUA_VERSION="5.1"',
     '-DBUILDCFG_DRIVER="sqlite3"'
 ]
 astrCmd.extend(astrCMAKE_COMPILER)
@@ -367,6 +384,21 @@ astrCmd.extend(astrCMAKE_COMPILER)
 astrCmd.extend(astrCMAKE_PLATFORM)
 astrCmd.append(strCfg_projectFolder)
 strCwd = os.path.join(strCfg_workingFolder, 'lua5.4', 'mysql')
+subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
+subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
+
+astrCmd = [
+    'cmake',
+    '-DCMAKE_INSTALL_PREFIX=""',
+    '-DPRJ_DIR=%s' % strCfg_projectFolder,
+    '-DBUILDCFG_LUA_USE_SYSTEM="OFF"',
+    '-DBUILDCFG_LUA_VERSION="5.4"',
+    '-DBUILDCFG_DRIVER="postgres"'
+]
+astrCmd.extend(astrCMAKE_COMPILER)
+astrCmd.extend(astrCMAKE_PLATFORM)
+astrCmd.append(strCfg_projectFolder)
+strCwd = os.path.join(strCfg_workingFolder, 'lua5.4', 'postgres')
 subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
 subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
 

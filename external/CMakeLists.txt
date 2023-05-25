@@ -71,5 +71,8 @@ ADD_SUBDIRECTORY(gnutls)
 # Mariadb needs gnutls.
 ADD_SUBDIRECTORY(mariadb-connector-c)
 
+# lipq needs nothing.
+ADD_SUBDIRECTORY(libpq)
+
 # SQLite3 needs nothing.
 ADD_SUBDIRECTORY(sqlite3)
