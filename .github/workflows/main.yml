@@ -47,6 +47,8 @@ jobs:
           cpu-architecture: riscv64
     container: ${{ matrix.platform.image }}
     steps:
+    - name: Disable Git safe directory
+      run: git config --system --add safe.directory '*'
     - name: Checkout repository
       # Use the old checkout v1 here. The newer v2 requires git 2.28 which is not available in the standard distribution.
       uses: actions/checkout@v1
