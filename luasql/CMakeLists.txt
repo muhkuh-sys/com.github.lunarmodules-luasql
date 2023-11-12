@@ -16,6 +16,9 @@ INCLUDE(${CMAKE_HOME_DIRECTORY}/cmake/version.cmake)
 CONFIGURE_FILE(mysql/installer/lua${BUILDCFG_LUA_VERSION}/luasql-mysql.xml
                ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-mysql-${PROJECT_VERSION}.xml
                @ONLY)
+CONFIGURE_FILE(postgres/installer/lua${BUILDCFG_LUA_VERSION}/luasql-postgres.xml
+               ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-postgres-${PROJECT_VERSION}.xml
+               @ONLY)
 CONFIGURE_FILE(sqlite3/installer/lua${BUILDCFG_LUA_VERSION}/luasql-sqlite3.xml
                ${CMAKE_BINARY_DIR}/lua${BUILDCFG_LUA_VERSION}-luasql-sqlite3-${PROJECT_VERSION}.xml
                @ONLY)
