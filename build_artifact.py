@@ -263,6 +263,7 @@ if len(astrMatch) != 3:
         len(astrMatch),
         ', '.join(astrMatch)
     ))
+astrMatch.sort()
 
 astrCmd = [
     strJonchki,
@@ -385,6 +386,7 @@ if len(astrMatch) != 3:
         len(astrMatch),
         ', '.join(astrMatch)
     ))
+astrMatch.sort()
 
 astrCmd = [
     strJonchki,

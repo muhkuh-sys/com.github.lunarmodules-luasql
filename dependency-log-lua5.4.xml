@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dependency-log>
 	<dependencies>
-		<dependency group="com.github.keplerproject" module="luasql" artifact="lua5.4-luasql-sqlite3" version="2.6.0.2"/>
+		<dependency group="com.github.keplerproject" module="luasql" artifact="lua5.4-luasql-mysql" version="2.6.0.3"/>
 		<dependency group="net.zlib" module="zlib" artifact="zlib" version="1.2.13.1"/>
 		<dependency group="org.lua" module="lua" artifact="lua" version="5.4.6.2"/>
 	</dependencies>
