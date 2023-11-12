@@ -28,8 +28,6 @@ SET_TARGET_PROPERTIES(TARGET_luasql_mysql PROPERTIES LINKER_LANGUAGE CXX)
 # Add the LUA includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_mysql
                            PRIVATE ${LUA_INCLUDE_DIR})
-TARGET_LINK_LIBRARIES(TARGET_luasql_mysql
-                      PRIVATE ${LUA_LIBRARIES})
 
 # Add the MySQL includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_mysql
@@ -71,8 +69,6 @@ SET_TARGET_PROPERTIES(TARGET_luasql_postgresql PROPERTIES LINKER_LANGUAGE CXX)
 # Add the LUA includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_postgresql
                            PRIVATE ${LUA_INCLUDE_DIR})
-TARGET_LINK_LIBRARIES(TARGET_luasql_postgresql
-                      PRIVATE ${LUA_LIBRARIES})
 
 # Add the libpq includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_postgresql
@@ -114,8 +110,6 @@ SET_TARGET_PROPERTIES(TARGET_luasql_sqlite3 PROPERTIES LINKER_LANGUAGE CXX)
 # Add the LUA includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_sqlite3
                            PRIVATE ${LUA_INCLUDE_DIR})
-TARGET_LINK_LIBRARIES(TARGET_luasql_sqlite3
-                      PRIVATE ${LUA_LIBRARIES})
 
 # Add the SQLite3 includes and library.
 TARGET_INCLUDE_DIRECTORIES(TARGET_luasql_sqlite3
