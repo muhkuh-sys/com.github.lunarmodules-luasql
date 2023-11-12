@@ -422,13 +422,13 @@ subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
 #    '-DCMAKE_INSTALL_PREFIX=""',
 #    '-DPRJ_DIR=%s' % strCfg_projectFolder,
 #    '-DBUILDCFG_LUA_USE_SYSTEM="OFF"',
-#    '-DBUILDCFG_LUA_VERSION="5.4"',
+#    '-DBUILDCFG_LUA_VERSION="5.1"',
 #    '-DBUILDCFG_DRIVER="mysql"'
 #]
 #astrCmd.extend(astrCMAKE_COMPILER)
 #astrCmd.extend(astrCMAKE_PLATFORM)
 #astrCmd.append(strCfg_projectFolder)
-#strCwd = os.path.join(strCfg_workingFolder, 'lua5.4', 'mysql')
+#strCwd = os.path.join(strCfg_workingFolder, 'lua5.1', 'mysql')
 #subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
 #subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
 
@@ -437,13 +437,13 @@ astrCmd = [
     '-DCMAKE_INSTALL_PREFIX=""',
     '-DPRJ_DIR=%s' % strCfg_projectFolder,
     '-DBUILDCFG_LUA_USE_SYSTEM="OFF"',
-    '-DBUILDCFG_LUA_VERSION="5.4"',
+    '-DBUILDCFG_LUA_VERSION="5.1"',
     '-DBUILDCFG_DRIVER="postgres"'
 ]
 astrCmd.extend(astrCMAKE_COMPILER)
 astrCmd.extend(astrCMAKE_PLATFORM)
 astrCmd.append(strCfg_projectFolder)
-strCwd = os.path.join(strCfg_workingFolder, 'lua5.4', 'postgres')
+strCwd = os.path.join(strCfg_workingFolder, 'lua5.1', 'postgres')
 subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
 subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
 
@@ -452,13 +452,13 @@ subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
 #    '-DCMAKE_INSTALL_PREFIX=""',
 #    '-DPRJ_DIR=%s' % strCfg_projectFolder,
 #    '-DBUILDCFG_LUA_USE_SYSTEM="OFF"',
-#    '-DBUILDCFG_LUA_VERSION="5.4"',
+#    '-DBUILDCFG_LUA_VERSION="5.1"',
 #    '-DBUILDCFG_DRIVER="sqlite3"'
 #]
 #astrCmd.extend(astrCMAKE_COMPILER)
 #astrCmd.extend(astrCMAKE_PLATFORM)
 #astrCmd.append(strCfg_projectFolder)
-#strCwd = os.path.join(strCfg_workingFolder, 'lua5.4', 'sqlite3')
+#strCwd = os.path.join(strCfg_workingFolder, 'lua5.1', 'sqlite3')
 #subprocess.check_call(' '.join(astrCmd), shell=True, cwd=strCwd, env=astrEnv)
 #subprocess.check_call('%s pack' % strMake, shell=True, cwd=strCwd, env=astrEnv)
 
