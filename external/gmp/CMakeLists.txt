@@ -11,8 +11,8 @@ INCLUDE(ExternalProject)
 #
 ExternalProject_Add(TARGET_libgmp
                     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/libgmp
-                    URL ${CMAKE_CURRENT_SOURCE_DIR}/gmp-6.2.1.tar.xz
-                    URL_HASH SHA1=0578d48607ec0e272177d175fd1807c30b00fdf2
+                    URL ${CMAKE_CURRENT_SOURCE_DIR}/gmp-6.3.0.tar.xz
+                    URL_HASH SHA1=b4043dd2964ab1a858109da85c44de224384f352
                     CONFIGURE_COMMAND ${CMAKE_CURRENT_BINARY_DIR}/libgmp/src/TARGET_libgmp/configure --prefix=${CMAKE_CURRENT_BINARY_DIR}/install --enable-static=yes --enable-shared=no --enable-fat --with-pic --host=${CONFIGURE_HOST}
                     BUILD_COMMAND make
                     INSTALL_COMMAND make install
