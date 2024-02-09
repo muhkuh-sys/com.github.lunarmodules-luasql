@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-PROJECT("com.github.keplerproject-luasql")
+PROJECT("com.github.lunarmodules-luasql")
 
 # Get the VCS version for the jonchki configuration.
 INCLUDE(cmake/version.cmake)

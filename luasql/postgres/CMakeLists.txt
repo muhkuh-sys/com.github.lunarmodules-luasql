@@ -8,7 +8,7 @@ SET(PROJECT_VERSION  "${VERSION_EXTERNAL}.${VERSION_PACKAGE}")
 # Build a package for the selected platform.
 #
 
-SET(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_BINARY_DIR}/../../../repository/com/github/keplerproject/luasql/${PROJECT_VERSION})
+SET(CPACK_OUTPUT_FILE_PREFIX ${CMAKE_BINARY_DIR}/../../../repository/com/github/lunarmodules/luasql/${PROJECT_VERSION})
 SET(CPACK_INCLUDE_TOPLEVEL_DIRECTORY FALSE)
 SET(CPACK_PACKAGE_FILE_NAME "lua${BUILDCFG_LUA_VERSION}-luasql-postgres-${PROJECT_VERSION}-${JONCHKI_PLATFORM}")
 
@@ -67,7 +67,7 @@ ADD_CUSTOM_TARGET(pack
 # Filter the pom.xml file.
 #
 SET(POM_ARTIFACT_ID  "luasql-postgres")
-SET(POM_GROUP_ID     "com.github.keplerproject")
+SET(POM_GROUP_ID     "com.github.lunarmodules")
 SET(POM_VERSION      "${PROJECT_VERSION}")
 SET(POM_PACKAGING    "tar.xz")
 CONFIGURE_FILE(installer/lua${BUILDCFG_LUA_VERSION}/pom.xml

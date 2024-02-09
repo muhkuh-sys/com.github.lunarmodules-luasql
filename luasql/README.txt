@@ -1,1 +1,1 @@
-This is luasql from https://github.com/keplerproject/luasql .
+This is luasql from https://github.com/lunarmodules/luasql .
