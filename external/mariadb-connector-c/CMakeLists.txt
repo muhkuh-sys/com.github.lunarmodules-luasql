@@ -35,8 +35,8 @@ LIST(APPEND PRJ_CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=''")
 
 ExternalProject_Add(TARGET_mariadbconnector
                     PREFIX ${CMAKE_CURRENT_BINARY_DIR}/mariadbconnector
-                    URL ${CMAKE_CURRENT_SOURCE_DIR}/mariadb-connector-c-3.3.5-src.tar.gz
-                    URL_HASH SHA1=ab5d1da4ec547e23349b80adec5f1a225d3b3cb1
+                    URL ${CMAKE_CURRENT_SOURCE_DIR}/mariadb-connector-c-3.3.8-src.tar.gz
+                    URL_HASH SHA1=feb9de9e45da59bdeed6098d4b7d86cb343b0b9f
                     PATCH_COMMAND "${PYTHON_EXECUTABLE}" ${CMAKE_HOME_DIRECTORY}/cmake/tools/apply_patches.py --working-folder ${CMAKE_CURRENT_BINARY_DIR}/mariadbconnector/src/TARGET_mariadbconnector --patch-folder ${CMAKE_CURRENT_SOURCE_DIR}/patches --strip 1
                     CMAKE_ARGS ${PRJ_CMAKE_ARGS}
                     INSTALL_COMMAND make install DESTDIR=${CMAKE_BINARY_DIR}/install
