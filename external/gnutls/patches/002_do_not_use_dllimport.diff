@@ -1,7 +1,7 @@
-diff -uNr gnutls-3.6.13/lib/includes/gnutls/gnutls.h.in gnutls-3.6.13-patched/lib/includes/gnutls/gnutls.h.in
---- gnutls-3.6.13/lib/includes/gnutls/gnutls.h.in	2020-03-29 19:24:03.000000000 +0200
-+++ gnutls-3.6.13-patched/lib/includes/gnutls/gnutls.h.in	2020-04-29 21:27:20.563461185 +0200
-@@ -65,11 +65,7 @@
+diff -uNr gnutls-3.7.10/lib/includes/gnutls/gnutls.h.in gnutls-3.7.10_patched/lib/includes/gnutls/gnutls.h.in
+--- gnutls-3.7.10/lib/includes/gnutls/gnutls.h.in	2023-08-03 16:42:26.000000000 +0200
++++ gnutls-3.7.10_patched/lib/includes/gnutls/gnutls.h.in	2024-02-09 10:42:50.500597367 +0100
+@@ -64,11 +64,7 @@
  #define GNUTLS_CIPHER_RIJNDAEL_CBC GNUTLS_CIPHER_AES_128_CBC
  #define GNUTLS_CIPHER_ARCFOUR GNUTLS_CIPHER_ARCFOUR_128
  
