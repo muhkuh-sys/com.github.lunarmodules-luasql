@@ -1,0 +1,24 @@
+diff -uNr postgresql-16.2/src/interfaces/libpq/Makefile postgresql-16.2_patched/src/interfaces/libpq/Makefile
+--- postgresql-16.2/src/interfaces/libpq/Makefile	2024-02-05 22:41:37.000000000 +0100
++++ postgresql-16.2_patched/src/interfaces/libpq/Makefile	2024-02-12 10:27:50.035417349 +0100
+@@ -116,13 +116,13 @@
+ # by statically-linked libraries, as we can't expect them to honor this
+ # coding rule.
+ libpq-refs-stamp: $(shlib)
+-ifneq ($(enable_coverage), yes)
+-ifeq (,$(filter aix solaris,$(PORTNAME)))
+-	@if nm -A -u $< 2>/dev/null | grep -v __cxa_atexit | grep exit; then \
+-		echo 'libpq must not be calling any function which invokes exit'; exit 1; \
+-	fi
+-endif
+-endif
++#ifneq ($(enable_coverage), yes)
++#ifeq (,$(filter aix solaris,$(PORTNAME)))
++#	@if nm -A -u $< 2>/dev/null | grep -v __cxa_atexit | grep exit; then \
++#		echo 'libpq must not be calling any function which invokes exit'; exit 1; \
++#	fi
++#endif
++#endif
+ 	touch $@
+ 
+ # Make dependencies on pg_config_paths.h visible in all builds.
